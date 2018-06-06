@@ -1,0 +1,1 @@
+var Search=function(){return{init:function(){jQuery().datepicker&&$(".date-picker").datepicker();Metronic.initFancybox()}}}()

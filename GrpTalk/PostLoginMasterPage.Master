@@ -1,0 +1,1090 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="PostLoginMasterPage.master.cs" Inherits="GrpTalk.PostLoginMasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <meta name="ROBOTS" content="NOINDEX, NOFOLLOW" />
+    <title>GrpTalk</title>
+    <asp:ContentPlaceHolder ID="pagecss" runat="server"></asp:ContentPlaceHolder>
+    <link href="/css/jquery.jcrop.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="Images/ico/favicon.ico" />
+    <link href="css/main.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" />
+    <link href="css/toastr.min.css" rel="stylesheet" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- BEGIN PAGE LEVEL STYLES -->
+    <link href="assets/admin/pages/css/profile.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout3/css/layout.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Kanit" rel="stylesheet"> 
+    <style type="text/css">
+        /*html {max-width:100%;overflow-x:hidden;}*/
+
+        /*newchanges starts*/
+        body {
+            background-color: #262524;
+            padding: 0;
+            margin: 0;
+            font-size: 15px;
+            font-family: 'Kanit', sans-serif;
+        }
+        .ui-widget, .ui-accordion .ui-accordion-header{font-family: 'Kanit', sans-serif !important;}
+         section#header .navbar-inverse, section#header, .navbar-inverse{
+            background: #f9a944; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #f9a944 , #d6335c) !important; /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #f9a944, #d6335c) !important; /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #f9a944, #d6335c) !important; /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #f9a944 , #d6335c) !important; /* Standard syntax */
+        }
+         #listTitle, #listTitle1 {background-color:#606060;padding:6px 0;color:#fff;}
+        section#header {
+            background-color: #fff;
+        }
+        .btn-white, .btn-white:hover{background:#fff; color:#FC5055;}
+        .btn-danger {
+            background:#f95259 !important;
+            border-color:#da464c !important;
+        }
+            .btn-danger:hover {
+                background:#e34249 !important;
+            }
+        #createGrpTalk,#createGrpList{background:#F95259 !important; color:#fff;}
+        .navbar-inverse .navbar-nav>li>a{
+            color:#fad7af !important;
+        }
+        .navbar-inverse .navbar-nav > li > a:hover {
+            color: #f9f9f9 !important;
+        }
+
+        .navbar-inverse .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:active, .navbar-inverse .navbar-nav > li > a:focus {
+            color: #fff !important;
+            background-color: transparent;
+        }
+
+        .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover {
+            color: #fff !important;
+            background-color: transparent;
+        }
+        /*newchanges ends*/
+        .navbar-nav > li > .dropdown-menu {
+            margin-top: -5px;
+        }
+
+        .dropdown > .dropdown-menu, .dropdown-toggle > .dropdown-menu, .btn-group > .dropdown-menu {
+            background-color: #f5f5f5 !important;
+            border: 0 none;
+        }
+
+        .dropdown-menu > li > a {
+            color: #2e343b;
+            padding: 8px 14px;
+        }
+
+            .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+                background-color: #eaeaea;
+                color: #2e343b;
+                text-decoration: none;
+            }
+
+        .dropdown > .dropdown-menu::after, .dropdown-toggle > .dropdown-menu::after, .btn-group > .dropdown-menu::after {
+            border-bottom: 7px solid #f5f5f5;
+            border-left: 7px solid transparent;
+            border-right: 7px solid transparent;
+            content: "";
+            display: inline-block !important;
+            left: auto;
+            position: absolute;
+            right: 10px;
+            top: -7px;
+        }
+
+
+
+        a.navbar-brand {
+            color: #fff !important;
+            padding: 0;
+        }
+
+        #logo { /*height:50px;*/
+            line-height: 1.9;
+            text-align: center;
+            font-family: 'Kanit', sans-serif;
+            font-size: 25px;
+            font-weight: bold;
+            font-style: italic;
+            /*border-bottom: 50px solid #0082c3;
+            border-left: 0px solid transparent;
+            border-right: 30px solid transparent;*/
+            width: 200px;
+        }
+
+        .navbar {
+            margin-bottom: 0px;
+            border-radius: 0;
+        }
+
+        .navbar-inverse {
+            background: none;
+            border: 0;
+        }
+
+        .nav {
+            padding-left: 25%;
+        }
+
+        .row {
+            margin: 0;
+        }
+
+        #leftBar {
+            width: 4%;
+            background-color: #455c70 !important;
+        }
+
+        #rightBar {
+            width: 96%;
+            padding: 0;
+        }
+
+        ul#user-profile {
+            position: relative;
+        }
+
+            ul#user-profile li a {
+                padding: 5px 20px;
+            }
+
+                ul#user-profile li a i.fa-user {
+                    background-color: #263238;
+                    border-radius: 50%;
+                    padding: 13px 15px;
+                    position: relative;
+                }
+
+                ul#user-profile li a i.fa-circle {
+                    font-size: 10px;
+                    color: green;
+                    box-shadow: 0 0 3px #888;
+                    border-radius: 50%;
+                    position: absolute;
+                    right: 20px;
+                }
+
+        #main-content {
+            min-height: 560px;
+            background-color: #ececec;
+        }
+
+        .footer {
+            background-color: #262524;
+            padding: 10px;
+            text-align: center;
+            color: #fff;
+        }
+
+        #inprogrssbar {
+            background-color:#e8e8e8;
+            color: #404040 !important;
+            width: 100%;
+            display: none;
+        }
+
+        @media only screen and (max-width: 320px) {
+            .nav {
+                padding-left: 0;
+            }
+
+            .row {
+                margin: 0;
+            }
+
+            #rightBar {
+                float: right;
+                width: 96%;
+            }
+
+            ul#user-profile li a i.fa-circle {
+                width: 9px;
+                left: 50px;
+            }
+
+            #myTab li {
+                width: 100% !important;
+            }
+
+            .participantsList {
+                padding-left: 5px !important;
+                width: 72% !important;
+                float: left;
+            }
+
+            .calendar {
+                width: 26.75% !important;
+                float: left;
+            }
+
+            #reportsTab li:first-child, #contactsTab li:first-child {
+                width: 100% !important;
+            }
+
+            #reportsTab li:nth-child(2), #reportsTab li:last-child, #contactsTab li:nth-child(2), #contactsTab li:last-child {
+                width: 50% !important;
+            }
+
+            .ui-accordion-content {
+                padding: 5px !important;
+            }
+
+            #subscribeNow img {
+                width: 22px !important;
+            }
+
+            #subscribeNow p {
+                font-size: 9px !important;
+            }
+
+            #subscribe {
+                font-size: 10px !important;
+            }
+
+            #accordion ul li {
+                font-size: 12px !important;
+            }
+
+                #accordion ul li:first-child img, #accordion ul li:nth-child(2) img {
+                    width: 13px !important;
+                }
+
+            .contacts, .contactDetails {
+                width: 100%;
+            }
+
+            .startschedule input[type="text"] {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (min-width: 321px) and (max-width: 639px) {
+            .nav {
+                padding-left: 0;
+            }
+
+            .row {
+                margin: 0;
+            }
+
+            #rightBar {
+                float: right;
+                width: 96%;
+            }
+
+            #myTab li {
+                width: 100%;
+            }
+
+            .participantsList {
+                padding-left: 5px !important;
+                width: 75% !important;
+                float: left;
+            }
+
+            .calendar {
+                width: 23.35% !important;
+                float: left;
+            }
+
+            ul#user-profile li a i.fa-circle {
+                width: 9px;
+                left: 50px;
+            }
+
+            #reportsTab li:first-child, #contactsTab li:first-child {
+                width: 100% !important;
+            }
+
+            #reportsTab li:nth-child(2), #reportsTab li:last-child, #contactsTab li:nth-child(2), #contactsTab li:last-child {
+                width: 50% !important;
+            }
+
+            .ui-accordion-content {
+                padding: 5px !important;
+            }
+
+            #subscribeNow img {
+                width: 22px !important;
+            }
+
+            #subscribeNow p {
+                font-size: 9px !important;
+            }
+
+            #subscribe {
+                font-size: 10px !important;
+            }
+
+            #accordion ul li {
+                font-size: 12px !important;
+            }
+
+                #accordion ul li:first-child img, #accordion ul li:nth-child(2) img {
+                    width: 13px !important;
+                }
+
+            .contacts, .contactDetails {
+                width: 100%;
+            }
+
+            .startschedule input[type="text"] {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (min-width: 640px) and (max-width: 768px) {
+            .nav {
+                padding-left: 0;
+            }
+
+            .row {
+                margin: 0;
+            }
+
+            #rightBar {
+                float: right;
+                width: 96%;
+            }
+
+            .fa-plus {
+                padding: 14px 20px;
+            }
+
+            #createGrpTalk {
+                padding: 10px 20px 10px 75px;
+            }
+
+            .participantsList {
+                padding-left: 5px !important;
+                width: 74% !important;
+                float: left;
+            }
+
+            .calendar {
+                width: 25% !important;
+                float: left;
+            }
+
+            .participantsList p:first-child {
+                line-height: 20px !important;
+                font-size: 14px !important;
+            }
+
+            .participantsList p:nth-child(2) {
+                font-size: 14px !important;
+                line-height: 16px !important;
+            }
+
+            .participantsList p:last-child {
+                font-size: 14px !important;
+            }
+
+            #myTab li {
+                width: 92.25px;
+                font-size: 13px;
+            }
+
+                #myTab li a {
+                    padding: 10px 8px;
+                }
+
+            #reportsTab li:first-child {
+                width: 60% !important;
+            }
+
+            #reportsTab li:nth-child(2), #reportsTab li:last-child {
+                width: 20% !important;
+            }
+
+            #contactsTab li:first-child {
+                width: 52% !important;
+            }
+
+            #contactsTab li:nth-child(2) {
+                width: 20% !important;
+            }
+
+            #contactsTab li:last-child {
+                width: 28% !important;
+            }
+
+            .ui-accordion-content {
+                padding: 5px !important;
+            }
+
+            #subscribeNow img {
+                width: 22px !important;
+            }
+
+            #subscribeNow p {
+                font-size: 9px !important;
+            }
+
+            #subscribe {
+                font-size: 10px !important;
+            }
+
+            #accordion ul li {
+                font-size: 12px !important;
+            }
+
+                #accordion ul li:first-child img, #accordion ul li:nth-child(2) img {
+                    width: 13px !important;
+                }
+
+            .contacts, .contactDetails {
+                width: 32% !important;
+            }
+            /*#profilePic {width:26%;}
+            #profileDetails {width:73%;}*/
+
+            .startschedule input[type="text"] {
+                width: 60%;
+            }
+        }
+
+        @media only screen and (min-width: 769px) and (max-width: 940px) {
+            .nav {
+                padding-left: 0;
+            }
+
+            .row {
+                margin: 0;
+            }
+
+            #rightBar {
+                float: right;
+                width: 96%;
+            }
+
+            .fa-plus {
+                padding: 14px 22px;
+            }
+
+            #createGrpTalk {
+                padding: 10px 20px 10px 75px;
+            }
+
+            .participantsList {
+                padding-left: 5px !important;
+                width: 74% !important;
+                float: left;
+            }
+
+            .calendar {
+                width: 25.5% !important;
+                float: left;
+            }
+
+            .participantsList p:first-child {
+                line-height: 20px !important;
+                font-size: 14px !important;
+            }
+
+            .participantsList p:nth-child(2) {
+                font-size: 14px !important;
+                line-height: 16px !important;
+            }
+
+            .participantsList p:last-child {
+                font-size: 14px !important;
+            }
+
+            #myTab li {
+                width: 96.30px;
+                font-size: 13px;
+            }
+
+                #myTab li a {
+                    padding: 10px 8px;
+                }
+
+            #reportsTab li:first-child {
+                width: 60% !important;
+            }
+
+            #reportsTab li:nth-child(2), #reportsTab li:last-child {
+                width: 20% !important;
+            }
+
+            #contactsTab li:first-child {
+                width: 52% !important;
+            }
+
+            #contactsTab li:nth-child(2) {
+                width: 20% !important;
+            }
+
+            #contactsTab li:last-child {
+                width: 28% !important;
+            }
+
+            .ui-accordion-content {
+                padding: 5px !important;
+            }
+
+            #subscribeNow img {
+                width: 22px !important;
+            }
+
+            #subscribeNow p {
+                font-size: 9px !important;
+            }
+
+            #subscribe {
+                font-size: 10px !important;
+            }
+
+            #accordion ul li {
+                font-size: 12px !important;
+            }
+
+                #accordion ul li:first-child img, #accordion ul li:nth-child(2) img {
+                    width: 13px !important;
+                }
+
+            .contacts, .contactDetails {
+                width: 32% !important;
+            }
+            /*#profilePic {width:26%;}
+            #profileDetails {width:73%;}*/
+
+            .startschedule input[type="text"] {
+                width: 60%;
+            }
+        }
+
+        @media only screen and (min-width: 941px) and (max-width: 1279px) {
+            .nav {
+                padding-left: 16%;
+            }
+
+            .row {
+                margin: 0;
+            }
+
+            #rightBar {
+                float: right;
+                width: 96%;
+            }
+
+            .participantsList {
+                padding-left: 5px !important;
+                width: 74% !important;
+                float: left;
+            }
+
+            .calendar {
+                width: 25.5% !important;
+                float: left;
+            }
+
+            .participantsList p:first-child {
+                line-height: 20px !important;
+                font-size: 14px !important;
+            }
+
+            .participantsList p:nth-child(2) {
+                font-size: 14px !important;
+                line-height: 16px !important;
+            }
+
+            .participantsList p:last-child {
+                font-size: 14px !important;
+            }
+
+            #myTab li {
+                width: 119.35px;
+                font-size: 15px;
+            }
+
+                #myTab li a {
+                    padding: 10px 10px;
+                }
+
+            #reportsTab li:first-child {
+                width: 70% !important;
+            }
+
+            #reportsTab li:nth-child(2), #reportsTab li:last-child {
+                width: 15% !important;
+            }
+
+            #contactsTab li:first-child {
+                width: 63% !important;
+            }
+
+            #contactsTab li:nth-child(2) {
+                width: 15% !important;
+            }
+
+            #contactsTab li:last-child {
+                width: 22% !important;
+            }
+
+            .ui-accordion-content {
+                padding: 10px !important;
+            }
+
+            #subscribeNow img {
+                width: 22px !important;
+            }
+
+            #subscribeNow p {
+                font-size: 9px !important;
+            }
+
+            #subscribe {
+                font-size: 10px !important;
+            }
+
+            #accordion ul li {
+                font-size: 12px !important;
+            }
+
+                #accordion ul li:first-child img, #accordion ul li:nth-child(2) img {
+                    width: 13px !important;
+                }
+
+            .contacts, .contactDetails {
+                width: 32% !important;
+            }
+            /*#profilePic {width:26%;}
+            #profileDetails {width:73%;}*/
+
+            .startschedule input[type="text"] {
+                width: 60%;
+            }
+        }
+
+        @media only screen and (min-width: 1280px) {
+            .nav {
+                padding-left: 25%;
+            }
+
+            .row {
+                margin: 0;
+            }
+
+            #rightBar {
+                float: right;
+                width: 96%;
+            }
+
+            #leftBar {
+                width: 4%;
+                background-color: #455c70 !important;
+            }
+
+            #myTab li {
+                width: 157.75px;
+                font-size: 15px;
+            }
+
+                #myTab li a {
+                    padding: 10px 9px;
+                }
+
+            .participantsList {
+                width: 80% !important;
+                float: left;
+            }
+
+            .calendar {
+                width: 19.5% !important;
+                float: left;
+            }
+
+            .contacts, .contactDetails {
+                /*width: 24%;*/
+                width: 32.3%;
+            }
+            /*#profilePic {width:24%;}
+            #profileDetails {width:75%;}*/
+            #contactsTab li:first-child {
+                width: 71% !important;
+            }
+
+            #contactsTab li:nth-child(2) {
+                width: 12% !important;
+            }
+
+            #contactsTab li:last-child {
+                width: 17% !important;
+            }
+
+            .startschedule input[type="text"] {
+                width: 40%;
+            }
+        }
+    </style>
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date(); a = s.createElement(o),
+     m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-59055963-1', 'yconference.com', { 'siteSpeedSampleRate': 100 });
+        ga('require', 'displayfeatures');
+        ga('send', 'pageview');
+
+
+    </script>
+</head>
+<body>
+    <section id="header">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" id="logo" href="MyGrpTalks.aspx">
+                        <!--grp<span style="color: #e79e36;">Talk</span>-->
+                        <img src="/images/grpNewLogo.png" alt="logo" id="imgLogo" />
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-center" id="mainMenu">
+                        <li class="" id="grptalks-li" style="cursor: pointer"><a><i class="fa fa-users margin-right-5" aria-hidden="true"></i>Groups</a></li>
+
+                        <li id="contacts-li" style="cursor: pointer"><a><i class="icon-notebook margin-right-5" aria-hidden="true"></i>Contacts</a></li>
+                        <li id="account-li"><a href="MyAccount.aspx"><i class="fa fa-user margin-right-5" aria-hidden="true"></i>Account</a></li>
+                    </ul>
+
+
+
+                    <ul class="nav navbar-nav pull-right" id="user-profile">
+
+                        <!-- BEGIN USER LOGIN DROPDOWN -->
+                        <li class="dropdown dropdown-user dropdown-dark">
+                            <a data-close-others="true" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle" href="#">
+
+                                <% if (imgPath == "")
+                                   {%>
+                                <i class="fa fa-user"></i><i class="fa fa-circle" style=""></i>
+                                <% }
+                                   else
+                                   { %>
+                                <img alt="" class="img-circle" src="<%= imgPath %>" width="40px" height="40px" />
+                                <% }%>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-default pull-right">
+                                <!-- <li><a href="MyAccount.aspx"><i class="icon-user"></i> My Profile</a></li> -->
+                                <li><a id="logout" href="logout.aspx"><i class="icon-key"></i>Log Out </a></li>
+                            </ul>
+                        </li>
+                        <!-- END USER LOGIN DROPDOWN -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </section>
+    <section id="inprogrssbar">
+    </section>
+    <section id="content">
+        <div class="page-container">
+            <div class="page-content-wrapper">
+                <div class="page-content">
+                    <asp:ContentPlaceHolder ID="maincontent" runat="server"></asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+        <div class="footer">
+            Copy rights &copy; all rights are reserved 2016.
+        </div>
+        <input type="hidden" id="hdnCountryId" value="<%= Session["CountryID"]%>" />
+        <input type="hidden" id="hdnHostmobile" value="<%= Session["HostMobile"]%>" />
+        <input type="hidden" id="hdnQrCode" value="<%= Session["QrCode"]%>" />
+        <input type="hidden" id="hdnUserType" value="<%= Session["UserType"]%>" />
+        <input type="hidden" id="hdnOffSet" value="<%= Session["Offset"]%>" />
+
+    </section>
+
+    <asp:ContentPlaceHolder ID="footer" runat="server"></asp:ContentPlaceHolder>
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/admin/layout3/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="scripts/jquery-ui.min.js" type="text/javascript"></script>
+    <%--<script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>--%>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <%--<script src="js/jquery.js" type="text/javascript"></script>--%>
+    <script type="text/javascript" src="scripts/pusher.min.js"></script>
+    <script src="js/toastr.min.js" type="text/javascript"></script>
+    <script src="js/jquery.cookie.js" type="text/javascript"></script>
+    <script type="text/javascript" src="Scripts/jquery.fileupload.js"></script>
+    <script type="text/javascript" src="Scripts/jquery.Jcrop.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () 
+        {	var sliceNumber=0;
+            
+            
+            QrCodeLogOut();
+            var displayInprogressBar;
+            console.log(displayInprogressBar);
+            var path = window.location.pathname.toString().toLowerCase();
+            path = path.substring(1, path.length - 5);
+            if ($('#hdnUserType').val() == 1 || $('#hdnUserType').val()== 0) {
+                $('#imgLogo').attr("src","/images/grpNewLogo.png");
+                $('#logo').attr("href","Mygroup.aspx");
+            }
+            else{
+                $('#imgLogo').attr("src", "/images/grpNewLogo.png");
+                $('#logo').attr("href","MyGrpTalks.aspx");
+            }
+            if($.cookie('UserID'))
+            {alert('cookie')}
+			
+			
+            if (path == 'contacts' || path == 'phonecontacts') { 
+                $('#contacts-li').addClass("active");
+				
+            }
+
+            if (path == 'myaccount') {
+                $('#account-li').addClass("active");
+				
+            }
+            if (path == 'mygrptalks' || path == 'mygroup') 
+            { 
+                $('#grptalks-li').addClass("active");
+				
+            }
+            if (path == 'creategrouptalk' || path == 'creategroup') { 
+                $('#grptalks-li').addClass("active");
+				
+            }
+            if (path == 'editgrouptalk' || path == 'editgroup') {
+                $('#grptalks-li').addClass("active");
+				
+            }
+			
+            if(path != 'mygrptalks'){
+                (function poll() {
+					
+					
+                    $.ajax({
+                        url: '/HandlersWeb/Groups.ashx',
+                        type: 'POST',
+                        async: false,
+                        data: { type: 10 },
+                        dataType: 'JSON',
+                        success: function (result) {
+                            if(result.Success == true){
+								
+                                var grpTalkNames ="";
+                                for(var i=0;i<result.Items.length;i++)
+                                {
+                                    grpTalkNames = grpTalkNames += result.Items[i].conf_name + ',';
+                                    // if (path == 'mygrptalks') 
+                                    //{ 
+                                    //$('#' + result.Items[i].id).find('#date').html('<p style="font-family: 'Source Sans Pro', sans-serif; font-size: 30px; line-height: 56px;color:#27bd7c;" class="blink_me">Live</p>');
+                                    //$('#' + result.Items[i].id).attr('isStarted', 1);
+                                    //} -->
+                                }
+                                if (!(path == 'mygrptalks' || path == 'mygroup') )
+                                { 
+                                    $('#inprogrssbar').html('');
+                                    if($('#hdnUserType').val() == 2)
+                                    {
+                                        $('#inprogrssbar').html('<div align="center"><a href="/MyGrpTalks.aspx"> "' + grpTalkNames.substring(0, grpTalkNames.length - 1)+'" Call inprogress </a></div>');
+                                    }
+                                    else{
+                                        $('#inprogrssbar').html('<div align="center"><a href="/Mygroup.aspx"> "' + grpTalkNames.substring(0, grpTalkNames.length - 1)+'" Call inprogress </a></div>');
+                                    }
+                                    
+                                
+                                    $('#inprogrssbar').show();
+									
+                                }
+								
+                            }else{
+                                $('#inprogrssbar').hide();
+                                if(result.Message == "Session Expired")
+                                {
+                                    window.location.replace('/Home.aspx');
+                                }
+								
+                            }
+                        },
+                        dataType: "json",
+                        complete: setTimeout(function() {poll()}, 20000),
+                        timeout: 2000
+                    })
+                })();
+            }
+        });
+        $(document).unbind('keydown').bind('keydown', function (event) {
+            var doPrevent = false;
+            if (event.keyCode === 8) {
+                var d = event.srcElement || event.target;
+                if ((d.tagName.toUpperCase() === 'INPUT' && 
+					 (
+						 d.type.toUpperCase() === 'TEXT' ||
+						 d.type.toUpperCase() === 'PASSWORD' || 
+						 d.type.toUpperCase() === 'FILE' || 
+						 d.type.toUpperCase() === 'SEARCH' || 
+						 d.type.toUpperCase() === 'EMAIL' || 
+						 d.type.toUpperCase() === 'NUMBER' || 
+						 d.type.toUpperCase() === 'DATE' )
+					 ) || 
+					 d.tagName.toUpperCase() === 'TEXTAREA') {
+                    doPrevent = d.readOnly || d.disabled;
+                }
+                else {
+                    doPrevent = true;
+                }
+            }
+
+            if (doPrevent) {
+                event.preventDefault();
+            }
+        });
+
+		
+        function Notifier(msg, mode) {
+            var arr = msg.split('-')
+            toastr.options = {
+                "closeButton":false,
+                "debug": true,
+                "newestOnTop": true,
+                "progressBar": false,
+                "positionClass": "toast-top-center",
+                "preventDuplicates": true,
+                "timeOut": "5000",
+                "extendedTimeOut": "5000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+                
+            }
+            if(mode==1)
+            {
+                toastr.success(msg, '',{onclick: function () {}});
+            }
+            if(mode==2)
+            {
+                toastr.error(msg, '',{onclick: function () {}});
+            }
+            
+        }
+		
+		
+		
+
+
+		
+		
+        function CurrencyName()
+        {
+            var countryId=$.trim($('#hdnCountryId').val());
+            var hostMobile=$.trim($('#hdnHostmobile').val());
+            var qrCode=$.trim($('#hdnQrCode').val());
+            console.log(qrCode);
+            var currencyName = "";
+            if (countryId == "240")
+                currencyName = 'GBP';
+            else if(countryId == "108")
+               currencyName ="INR";
+            else if(countryId == "241")
+            {currencyName ="USD";}
+            else if(countryId == "239")
+            {currencyName ="AED";}
+            else if(countryId == "19")
+            {currencyName ="BHD";}
+            return currencyName;
+        }
+		
+        function sliceNumberFn() {
+            var countryId = $('#hdnCountryId').val();
+            if (countryId == 108 || countryId == 241) {
+                sliceNumber = -10;
+            }
+            else if (countryId == 19 || countryId == 124 || countryId == 173) {
+                sliceNumber = -8;
+            }
+            else if (countryId == 199 || countryId == 239)
+            { sliceNumber = -9; }
+            else
+            { sliceNumber = -7; }
+            return sliceNumber;
+        }
+		
+        function QrCodeLogOut()
+        {
+            var channelName=$.trim($('#hdnQrCode').val());
+			
+            var pusher=new Pusher('ed522d982044e2680be6');
+            console.log(channelName);
+            var channel = pusher.subscribe(channelName);
+            channel.bind('Logout', function (res) {
+                if(res.IsLoggedOut == 1)
+                {
+                    window.location.replace("/logout.aspx");
+                }
+                
+            });
+
+        }
+        $('#contacts-li').click(function()
+        {
+            if ($('#hdnUserType').val() == 1 || $('#hdnUserType').val()== 0) {
+                window.location.replace('/PhoneContacts.aspx');
+
+            }
+            else {
+                window.location.replace('/Contacts.aspx');
+            }
+        });
+		
+        $('#grptalks-li').click(function(e){
+            if ($('#hdnUserType').val() == 1 || $('#hdnUserType').val()== 0) {
+                window.location.replace('/Mygroup.aspx');
+
+            }
+            else {
+                window.location.replace('/MyGrpTalks.aspx');
+            }
+        });
+		
+        function getGrpTalkUserDateTime()
+        {
+            var sysTimeZone = -(new Date().getTimezoneOffset());
+            var userTimeZone = $('#hdnOffSet').val();
+            var grpTalkDate = new Date();
+            grpTalkDate.setMinutes(grpTalkDate.getMinutes() + (userTimeZone - sysTimeZone))
+            return grpTalkDate;
+        }
+		
+		
+
+    </script>
+
+    <asp:ContentPlaceHolder ID="pagejs" runat="server"></asp:ContentPlaceHolder>
+
+</body>
+</html>

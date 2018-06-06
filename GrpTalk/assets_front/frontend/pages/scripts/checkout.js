@@ -1,0 +1,1 @@
+var Checkout=function(){return{init:function(){$("#checkout").on("change",'#checkout-content input[name="account"]',function(){var n="";n=$(this).attr("value")=="register"?"Step 2: Account &amp; Billing Details":"Step 2: Billing Details";$("#payment-address .accordion-toggle").html(n)})}}}()

@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B064F3BA-FB65-4A4D-818B-0241CF66BA2E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GT.DataModel</RootNamespace>
+    <AssemblyName>GT.DataModel</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AdminUserInfo.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Agentslist.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="BackUpContacts4Aug.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CallerId.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CallerIdsCreateUpdateTracking.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="callflow.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="clicktocall_reports.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConferenceAutoDialInfo.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConferenceBalanceDeductionTrack.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConferenceInterConnectNumber.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConferenceRecording.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConferenceRunTrack.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="conference_call_activities.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="conference_members.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="conference_membersBackup.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="conference_members_devicetoken.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="conference_members_feb_08_2015.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="conference_schedules.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="conference_schedules_Trakings.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="conference_studio.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="contact.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContactsBackup.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="contacts_feb_08_2015.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="contacts_groups.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CountryMaster.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CurrencyMaster.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteConferenceMembersTracking.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="deletecontactid.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DeleteContactsTracking.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EmailCampainResponse.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Email_Queue_Conference.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="email_templates.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="errors_log.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="error_log.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FeatureMaster.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GateWay.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GTModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GTModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GTModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GTModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GTModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="LowBalanceAlertsSent.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="OptedInsSet.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Optin.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PulseMaster.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="report.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ScheduleMailTrack.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Services_HeartBeat_Info.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Services_HeartBeat_Info_Conf.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMS_Details_Conf.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMS_Queue.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMS_Queue_Conf.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMS_Reports_Conf.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SMTP_Queue.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="testUserpriceInfo.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="test_usercallerids.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TimeZone.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserBalanceAddingTrack.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserBalanceDepositHistory.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserBalanceInfo.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserBalanceInfo_10Apr.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserBalanceMaster.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserCallerId.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserCallerIdsBackUp.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserCallerIDsTriggerTable.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserCallerids_10Apr.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserContactsTraking.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserMissedCallToGetInformation.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPriceInfo.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPriceInfoHistory.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPriceInfo_10Apr.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserPriceMaster.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserSubAccount.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserToken.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="UserUnauthorizedAction.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_groups.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_group_contacts.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_group_contactsBackup.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_login_activities.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_login_activities_mod_mem.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="xl_upload_logs.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="yconference_Emails_list.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="yconference_email_list.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="yconference_mails_list.cs">
+      <DependentUpon>GTModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="GTModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>GTModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GTModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GTModel.edmx</DependentUpon>
+      <LastGenOutput>GTModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="GTModel.edmx.diagram">
+      <DependentUpon>GTModel.edmx</DependentUpon>
+    </None>
+    <None Include="GTModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>GTModel.edmx</DependentUpon>
+      <LastGenOutput>GTModel.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,264 @@
+
+@media(min-width:1280px) {
+.conf_sidepanel {
+	position: fixed;
+	right: 0;
+	top: 30%;
+	text-align: right
+}
+.sidepanel_btn {
+	border-radius: 5px 0 0 5px;
+	margin-bottom: 5px;
+	position: relative
+}
+.panel_show {
+	background: none repeat scroll 0 0 hsl(0,0%,100%);
+	position: relative;
+	right: 0;
+	transition: right .5s ease 0s, left .5s ease 0s;
+	text-align: left
+}
+.panel_hide {
+	right: -124px;
+	z-index: 10000 !important
+}
+.panel_content td:first-child {
+	color: hsl(0,0%,100%);
+	font-weight: 600;
+	padding: 8px 12px;
+	text-align: center;
+	width: 55px
+}
+.panel_content .table>tbody>tr:first-child>td {
+	border-top: medium none
+}
+}
+
+@media(max-width:1199px) {
+.conf_sidepanel {
+	display: none
+}
+}
+
+/* Begin Nav tabs */
+.nav-tabs, .nav-pills, .conference-tabs {
+	margin-bottom: 0px;
+	padding-left: 10px;
+}
+.conference-tabs > li > a {
+    color: rgb(255, 255, 255);
+	background: none repeat scroll 0 0 rgb(68, 77, 88);
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color: rgb(66, 139, 202);
+    text-decoration: none;
+}
+.badge-white {
+    background-color: rgb(226, 226, 226);
+    background-image: none;
+    color: rgb(0, 0, 0);
+}
+a.list-group-item.active > .badge, .conference-tabs > .active > a > .badge {
+    color: rgb(0, 0, 0);
+}
+/* End Nav tabs */
+
+.mix-grid .mix {
+	z-index: 1;
+	margin-bottom: 30px
+}
+.contact-main.moderator {
+	background: url("../../../images/moderator.png") no-repeat left top hsla(227,26%,90%,1)
+}
+.custom-grid .mix .mix-details h5 {
+	background: none repeat scroll 0 0 hsla(0,0%,0%,.2);
+	font-size: 13px;
+	font-weight: 600;
+	margin: 0;
+	padding: 5px
+}
+.custom-grid .mix .mix-details.default h5 {
+	padding: 0
+}
+.mix-details.default.disconnect>h5 {
+	padding: 5px !important
+}
+.custom-grid .mix .mix-details.default {
+	height: 42%;
+	bottom: -10%;
+	padding: 0;
+	background: none repeat scroll 0 0 hsla(210,9%,45%,.8)
+}
+.default {
+	background: none repeat scroll 0 0 hsla(210,9%,45%,.8)
+}
+.custom-grid .mix .mix-details.dialing, .custom-grid .mix .mix-details.inprogress, .custom-grid .mix .mix-details.disconnect, .custom-grid .mix .mix-details.mute, .custom-grid .mix .mix-details.deaf, .custom-grid .mix .mix-details.both {
+	height: 44%;
+	bottom: -10%;
+	padding: 0
+}
+.custom-grid .mix .mix-details.default:hover {
+	bottom: -10%
+}
+.custom-grid .mix .mix-details.dialing:hover, .custom-grid .mix .mix-details.inprogress:hover, .custom-grid .mix .mix-details.mute:hover, .custom-grid .mix .mix-details.deaf:hover, .custom-grid .mix .mix-details.disconnect:hover, .custom-grid .mix .mix-details.both:hover {
+	bottom: 0
+}
+.custom-grid .mix .mix-details.dialing, .dialing {
+	background: rgba(81,155,198,.8)
+}
+.custom-grid .mix .mix-details.inprogress, .inprogress {
+	background: hsla(120,30%,55%,.8)
+}
+.custom-grid .mix .mix-details.disconnect, .disconnect {
+	background: hsla(7,67%,53%,.8) !important
+}
+.custom-grid .mix .mix-details.mute, .mute {
+	background: none repeat scroll 0 0 hsla(32,50%,55%,.8)
+}
+.custom-grid .mix .mix-details.deaf, .deaf {
+	background: none repeat scroll 0 0 hsla(237,30%,60%,.8)
+}
+.custom-grid .mix .mix-details.both, .both {
+	background: none repeat scroll 0 0 hsla(21,45%,35%,.8)
+}
+.custom-grid .mix .mix-details.keypress {
+	bottom: 0%;
+	height: 100%;
+	-webkit-animation: keypress 1s linear 1s infinite alternate;
+	animation: keypress 1s linear 1s infinite alternate
+}
+.custom-grid .mix:hover .mix-details.keypress {
+	bottom: 0%;
+	height: 44%;
+	-webkit-animation: paused;
+	animation: paused
+}
+.custom-grid .mix .mix-details i {
+	font-size: 24px;
+	line-height: 24px
+}
+.custom-grid .mix .mix-details a.btn {
+	font-size: 12px;
+	padding: 5px 0;
+	border-radius: 0
+}
+.custom-green {
+	background-color: hsl(120,30%,55%);
+	color: hsl(0,0%,100%)
+}
+.custom-green:hover, .custom-green:focus, .custom-green:active, .custom-green.active {
+	background-color: hsl(120,30%,47%);
+	color: hsl(0,0%,100%)
+}
+.btn-cus-trans {
+	background: none repeat scroll 0 0 hsla(0,0%,0%,.1);
+	border-right: 1px solid hsla(0,0%,0%,.2);
+	color: hsla(0,0%,100%,1)
+}
+.btn-cus-trans:last-child {
+	border: none
+}
+.btn-cus-trans:hover, .btn-cus-trans:focus, .btn-cus-trans:active, .btn-cus-trans.active {
+	background: none repeat scroll 0 0 hsla(0,0%,0%,.3);
+	color: hsla(0,0%,100%,1)
+}
+.custom-grid .mix .mix-details a i {
+	color: hsla(0,0%,100%,.7) !important
+}
+.custom-grid .mix .mix-details a:hover i, .custom-grid .mix .mix-details a:focus i, .custom-grid .mix .mix-details a:active i, .custom-grid .mix .mix-details a.btn-cus-trans.active i {
+	color: hsla(0,0%,100%,1) !important
+}
+.contact-main {
+	background: none repeat scroll 0 0 hsla(227,26%,90%,1);
+	border: 1px solid hsla(0,0%,0%,.1);
+	border-radius: 4px;
+	min-height: 185px;
+	padding: 15px 0;
+	text-align: center
+}
+.contact-first-letters {
+	border-radius: 50px;
+	color: hsl(0,0%,100%);
+	font-size: 22px;
+	height: 65px;
+	line-height: 63px;
+	text-transform: uppercase;
+	padding: 0 5px;
+	margin: 0 auto;
+	position: relative;
+	width: 65px
+}
+.contact-main>h4 {
+	font-size: 13px;
+	font-weight: 600;
+	margin: 0;
+	overflow: hidden;
+	padding: 5px;
+	line-height: 16px;
+	text-overflow: ellipsis;
+	text-transform: capitalize
+}
+i.outbond {
+	font-size: 24px;
+	position: absolute;
+	right: -9px;
+	top: -3px;
+	transform: rotate(-45deg)
+}
+i.inbond {
+	bottom: -3px;
+	font-size: 24px;
+	left: -9px;
+	position: absolute;
+	transform: rotate(135deg)
+}
+.default i.outbond, .default i.inbond {
+	color: hsla(211,9%,45%,.8)
+}
+.dialing i.outbond, .dialing i.inbond {
+	color: hsla(202,51%,55%,.8)
+}
+.inprogress i.outbond, .inprogress i.inbond {
+	color: hsla(120,30%,55%,.8)
+}
+.mute i.outbond, .mute i.inbond {
+	color: hsla(32,50%,55%,.8)
+}
+.deaf i.outbond, .deaf i.inbond {
+	color: hsla(237,30%,60%,.8)
+}
+.both i.outbond, .both i.inbond {
+	color: hsla(21,45%,35%,.8)
+}
+.disconnect i.outbond, .disconnect i.inbond {
+	color: hsla(7,67%,53%,.8)
+}
+.dial {
+	border: 2px solid hsl(227,27%,90%);
+	border-radius: 50px;
+	bottom: 0;
+	clear: both;
+	color: hsl(0,0%,100%);
+	padding: 2px;
+	line-height: 8px;
+	position: absolute;
+	right: 0
+}
+.dialin {
+	background: none repeat scroll 0 0 hsl(123,28%,61%)
+}
+.dialout {
+	background: none repeat scroll 0 0 hsl(7,67%,60%)
+}
+.custom-grid .mix .mix-details a.btn {
+	font-size: 11px
+}
+.custom-grid .mix .mix-details i {
+	border: 1px solid hsla(0,0%,100%,.5);
+	border-radius: 50px;
+	font-size: 18px;
+	line-height: 22px;
+	margin-bottom: 4px;
+	padding: 2px;
+	width: 28px
+}

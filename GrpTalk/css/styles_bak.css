@@ -1,0 +1,60 @@
+﻿body {background-color:#263238;padding:0;margin:0;font-size:15px;font-family:Calibri;}
+
+/*InProgress*/
+#banner {text-align:center;background-color:#27bd7c;color:#263238;font-weight:bold;}
+#createGrpTalk,#createGrpList {background-color:#0a93d7;width:100%;border-radius:0;font-size:18px;font-weight:bold;position:relative;border:0;padding:10px 20px 10px 90px;}
+#loadMore {background-color:#0a93d7;width:100%;border-radius:0;font-size:18px;font-weight:bold;border:0;}
+#createGrpTalk .fa-plus,#createGrpList .fa-plus {background-color: #0282c2;float: left;left: 0;padding: 14px 32px;position: absolute;top: 0;}
+.padding-left-0 {padding-left:0 !important;}
+.padding-right-0 {padding-right:0 !important;}
+.margin-bottom-0 {margin-bottom:0 !important;}
+.margin-bottom-1 {margin-bottom:1px !important;}
+.margin-top-2 {margin-top:2px !important;}
+.margin-bottom-3 {margin-bottom:3px !important;}
+.margin-bottom-30 {margin-bottom:30px !important;}
+.margin-right-0 {margin-right:0 !important;}
+.margin-right-5 {margin-right:5px !important;}
+.calendar {background-color:#e4e4e4;padding:10px;text-align:center;width:18.5% !important; }
+.calendar p{color:#263238; }
+.list, .list1 {border-bottom:1px solid #d4d4d4;height:77px;}
+.list p, .list1 p {margin-bottom:0;}
+.participantsList {padding-left:15px !important;width:81% !important;}
+#listTitle, #listTitle1 {background-color:#263238;padding:10px 0;color:#fff;}
+#listTitle ul, #listTitle1 ul {list-style-type:none;margin:0;padding:0;float:right;}
+#listTitle ul li, #listTitle1 ul li{display:inline-block;padding:0 10px;}
+.fa-phone,.fa-pencil,.fa-trash-o,.fa-calendar-times-o,.fa-users,.fa-long-arrow-right {cursor:pointer;}
+#inProgressTimer {background-color:#e5e5e5;padding:30px 0;text-align:center;}
+.timer {font-size:30px;color:#323c41;}
+#inProgressActions{list-style-type:none;padding:0;margin:0;}
+#inProgressActions li{display:inline-block;margin-right:30px;}
+#inProgressActions li a{display:inline-block;padding:10px;}
+#inProgressActions li:last-child{margin-right:0px;}
+#myTab {border:0;margin:15px 0 0 0;}
+#myTab li {margin-right:0 !important;width: 195.9px !important;text-align: center;}
+#myTab li a {color:#fff;margin-right:0 !important;}
+#myTab li.allMembers {background-color:#df6a00 !important;}
+#myTab li.onCall {background-color:#f49b01 !important;}
+#myTab li.callEnded {background-color:#0492ba !important;}
+#myTab li.muted {background-color:#0f699d !important;}
+#myTab li.wantsToTalk {background-color:#323c41 !important;}
+#myTab > li > a, #myTab > li > a:hover, #myTab > li > a:focus {background:none;border-radius:0;border:0;}
+#myTab > li.active > a, #myTab > li.active > a:hover, #myTab > li.active > a:focus {background:none;border-radius:0;border:0;}
+#myTab > li > a {border: 0;}
+#search,#searchBtn, #searchMember {border:1px solid #ccc;border-radius:0;background-color: #c8c8c8;padding:10px 30px;}
+#search i.glyphicon, #searchBtn i.glyphicon, #searchMember i.glyphicon{top: 3px;}
+.navbar-form {width:100%;padding:0 !important;margin:1px 0 20px 0 !important;border-radius:0 !important;}
+.form-control {border-top-left-radius:0 !important;border-bottom-left-radius:0 !important;background-color:#e4e4e4 !important;height:42px !important;}
+.table {width:100%;}
+.table th, .table td {text-align:left;vertical-align:middle !important;}
+.table ul {list-style-type:none;padding:0;margin:0;}
+.table ul li {display:inline-block;margin-right:15px;width:30px;}
+#mute, #addMember {background-color:#1ac3ee;border-radius:50%;height:50px;width:50px;}
+#hangup {background-color:#ee5b1a;border-radius:50%;height:50px;width:50px;}
+#mute:hover,#addMember:hover {background-color:#008eb2;}
+#hangup:hover {background-color:#ae3500;}
+
+.table-bordered th,.table-bordered td{width:100px;height:40px;}
+
+.btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus, a:focus, input[type=file]:focus, input[type=radio]:focus, input[type=checkbox]:focus {
+   outline:0;
+}

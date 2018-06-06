@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="129400b2855840958454ddd83519e559" Name="Diagram1">
+        <EntityTypeShape EntityType="GrpTalkModel.Email_Queue_Conference" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.errors_log" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.Services_HeartBeat_Info" Width="1.5" PointX="2.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.Services_HeartBeat_Info_Conf" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.SMTP_Queue" Width="1.5" PointX="4.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.sysdiagram" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.user" Width="1.5" PointX="6.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.AdminUserInfo" Width="1.5" PointX="0.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.Agentslist" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.BackUpContacts4Aug" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.CallerId" Width="1.5" PointX="8.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.CallerIdsCreateUpdateTracking" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.callflow" Width="1.5" PointX="2.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.clicktocall_reports" Width="1.5" PointX="10.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.conference_call_activities" Width="1.5" PointX="10.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.conference_members" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.conference_members_devicetoken" Width="1.5" PointX="12.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.conference_members_feb_08_2015" Width="1.5" PointX="12.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.conference_membersBackup" Width="1.5" PointX="8.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.conference_schedules" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.conference_schedules_Trakings" Width="1.5" PointX="4.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.conference_studio" Width="1.5" PointX="14.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.ConferenceAutoDialInfo" Width="1.5" PointX="14.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.ConferenceBalanceDeductionTrack" Width="1.5" PointX="0.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.ConferenceInterConnectNumber" Width="1.5" PointX="10.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.ConferenceRecording" Width="1.5" PointX="16.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.ConferenceRunTrack" Width="1.5" PointX="16.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.contact" Width="1.5" PointX="16.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.contacts_feb_08_2015" Width="1.5" PointX="16.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.contacts_groups" Width="1.5" PointX="12.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.ContactsBackup" Width="1.5" PointX="14.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.CountryMaster" Width="1.5" PointX="16.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.CurrencyMaster" Width="1.5" PointX="18.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.DeleteConferenceMembersTracking" Width="1.5" PointX="18.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.deletecontactid" Width="1.5" PointX="18.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.DeleteContactsTracking" Width="1.5" PointX="18.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.email_templates" Width="1.5" PointX="18.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.EmailCampainResponse" Width="1.5" PointX="18.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.error_log" Width="1.5" PointX="2.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.FeatureMaster" Width="1.5" PointX="4.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.GateWay" Width="1.5" PointX="6.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.LowBalanceAlertsSent" Width="1.5" PointX="8.75" PointY="19.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.OptedInsSet" Width="1.5" PointX="20.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.Optin" Width="1.5" PointX="20.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.PulseMaster" Width="1.5" PointX="20.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.report" Width="1.5" PointX="20.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.ScheduleMailTrack" Width="1.5" PointX="10.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.SMS_Details_Conf" Width="1.5" PointX="16.75" PointY="21.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.SMS_Queue" Width="1.5" PointX="22.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.SMS_Queue_Conf" Width="1.5" PointX="0.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.SMS_Reports_Conf" Width="1.5" PointX="2.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.test_usercallerids" Width="1.5" PointX="22.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.testUserpriceInfo" Width="1.5" PointX="22.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.TimeZone" Width="1.5" PointX="12.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.user_group_contacts" Width="1.5" PointX="22.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.user_group_contactsBackup" Width="1.5" PointX="22.75" PointY="17.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.user_groups" Width="1.5" PointX="18.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.user_login_activities" Width="1.5" PointX="22.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.user_login_activities_mod_mem" Width="1.5" PointX="24.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserBalanceAddingTrack" Width="1.5" PointX="24.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserBalanceDepositHistory" Width="1.5" PointX="4.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserBalanceInfo" Width="1.5" PointX="6.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserBalanceInfo_10Apr" Width="1.5" PointX="24.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserBalanceMaster" Width="1.5" PointX="8.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserCallerId" Width="1.5" PointX="24.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserCallerids_10Apr" Width="1.5" PointX="24.75" PointY="16.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserCallerIdsBackUp" Width="1.5" PointX="24.75" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserCallerIDsTriggerTable" Width="1.5" PointX="20.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserContactsTraking" Width="1.5" PointX="22.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserMissedCallToGetInformation" Width="1.5" PointX="24.75" PointY="24.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserPriceInfo" Width="1.5" PointX="10.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserPriceInfo_10Apr" Width="1.5" PointX="12.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserPriceInfoHistory" Width="1.5" PointX="14.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserPriceMaster" Width="1.5" PointX="16.75" PointY="25.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserSubAccount" Width="1.5" PointX="26.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserToken" Width="1.5" PointX="26.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.UserUnauthorizedAction" Width="1.5" PointX="26.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.xl_upload_logs" Width="1.5" PointX="26.75" PointY="15.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.yconference_email_list" Width="1.5" PointX="26.75" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.yconference_Emails_list" Width="1.5" PointX="26.75" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="GrpTalkModel.yconference_mails_list" Width="1.5" PointX="26.75" PointY="25.75" IsExpanded="true" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

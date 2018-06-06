@@ -1,0 +1,1 @@
+$(document).ready(function(){$(".scroll-to-top").click(function(){return $("html, body").animate({scrollTop:0},1600,"easeInOutQuart"),!1})})

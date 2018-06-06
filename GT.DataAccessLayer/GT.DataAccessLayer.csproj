@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{432AC773-F915-4822-B9F8-95C5D4DD5EB7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GT.DataAccessLayer</RootNamespace>
+    <AssemblyName>GT.DataAccessLayer</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Plivo">
+      <HintPath>\\192.168.1.35\websites\GrpTalk\Bin\Plivo.dll</HintPath>
+    </Reference>
+    <Reference Include="PusherServer">
+      <HintPath>\\192.168.1.37\GrpTalk\GrpTalk\bin\PusherServer.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>\\192.168.1.35\websites\GrpTalk\Bin\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ContactsEntity.cs" />
+    <Compile Include="DataAccess.cs" />
+    <Compile Include="EntityHelper.cs" />
+    <Compile Include="GrpInboundCallEntity.cs" />
+    <Compile Include="Index.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdateCallBacksEntity.cs" />
+    <Compile Include="UsersInfoEntity.cs" />
+    <Compile Include="V_1_2\GroupcallReports_V120.cs" />
+    <Compile Include="V_1_2\GroupCall_V120.cs" />
+    <Compile Include="V_1_2\Groups_V120.cs" />
+    <Compile Include="V_1_2\Login_V120.cs" />
+    <Compile Include="V_1_2\Profile_V120.cs" />
+    <Compile Include="V_1_3\Contacts_V130.cs" />
+    <Compile Include="V_1_3\GroupcallReports_V130.cs" />
+    <Compile Include="V_1_3\GroupCall_V130.cs" />
+    <Compile Include="V_1_3\Groups_V130.cs" />
+    <Compile Include="V_1_3\Login_V130.cs" />
+    <Compile Include="V_1_3\Profile_V130.cs" />
+    <Compile Include="V_1_4\Contacts_V140.cs" />
+    <Compile Include="V_1_4\GroupcallReports_V140.cs" />
+    <Compile Include="V_1_4\GroupCall_V140.cs" />
+    <Compile Include="V_1_4\Groups_V140.cs" />
+    <Compile Include="V_1_4\Login_V140.cs" />
+    <Compile Include="V_1_4\Profile_V140.cs" />
+    <Compile Include="V_1_5\Contacts.cs" />
+    <Compile Include="V_1_5\GroupCall.cs" />
+    <Compile Include="V_1_5\GroupcallReports.cs" />
+    <Compile Include="V_1_5\Groups.cs" />
+    <Compile Include="V_1_5\Login.cs" />
+    <Compile Include="V_1_5\Profile.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GT.DataModel\GT.DataModel.csproj">
+      <Project>{b064f3ba-fb65-4a4d-818b-0241cf66ba2e}</Project>
+      <Name>GT.DataModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GT.Utilities\GT.Utilities.csproj">
+      <Project>{c80e050f-906a-4abd-973f-49c3a4cecbde}</Project>
+      <Name>GT.Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserDataTypes\UserDataTypes.csproj">
+      <Project>{05e5ee1e-c9d4-41a8-ac43-29a6d930b82e}</Project>
+      <Name>UserDataTypes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

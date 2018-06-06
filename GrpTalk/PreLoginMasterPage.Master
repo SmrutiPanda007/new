@@ -1,0 +1,204 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="PreLoginMasterPage.master.cs" Inherits="GrpTalk.PreLoginMasterPage" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Grptalk</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="css/animate.min.css" rel="stylesheet" />
+    <link href="css/homepage.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Kaushan+Script" rel="stylesheet" type="text/css" />
+
+
+    <asp:ContentPlaceHolder ID="CssContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body class="index">
+    <form>
+        <div>
+            <!-- Start Home Page Slider -->
+            <section id="page-top">
+                <!-- Carousel -->
+                <div id="main-slide" class="carousel slide" data-ride="carousel">
+
+                    <!-- Indicators 
+            <ol class="carousel-indicators">
+                <li data-target="#main-slide" data-slide-to="0" class=""></li>
+                <li data-target="#main-slide" data-slide-to="1" class="active"></li>
+                <li data-target="#main-slide" data-slide-to="2" class=""></li>
+            </ol>
+            Indicators end-->
+                    <!-- Navigation -->
+                    <nav class="navbar navbar-default navbar-shrink">
+                        <div class="container-fluid">
+                            <!-- Brand and toggle get grouped for better mobile display -->
+                            <div class="navbar-header page-scroll">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar up"></span>
+                                    <span class="icon-bar" style="width: 30px;"></span>
+                                    <span class="icon-bar down"></span>
+                                </button>
+                                <a class="navbar-brand page-scroll" href="#page-top">
+                                    <img src="images/untitled-1@3x.png" style="width: 170px;"></a>
+                            </div>
+
+
+                            <!-- Collect the nav links, forms, and other content for toggling -->
+                            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                <ul class="nav navbar-nav navbar-right">
+                                    <li class="hidden active">
+                                        <a href="#page-top"></a>
+                                    </li>
+                                    <li>
+                                        <a class="page-scroll" href="/Features">Features</a>
+                                    </li>
+                                    <li>
+                                        <a class="page-scroll" href="/Aboutus">About us</a>
+                                    </li>
+                                    <li>
+                                        <a class="page-scroll" href="/Features">Pricing</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.navbar-collapse -->
+                        </div>
+                        <!-- /.container-fluid -->
+                    </nav>
+                    <!-- Carousel inner -->
+                    <div class="carousel-inner" id="backgoundImage">
+
+                        <div class="item active">
+                            <!-- <img class="img-responsive" src="images/header-back-copy.png" alt="slider">-->
+                            <div class="slider-content">
+                                <div class="container-fluid banner_cont">
+                                    <div class="col-md-12 text-left" style="padding-left: 0px;">
+                                        <h1 class="animated3">
+                                            <span>Conference Calling Turned<br>
+                                                Inside Out!</span>
+                                        </h1>
+
+                                        <p class="animated2">Experience crystal call quality on your conferences, even with 50+ people on one outbound call</p>
+                                    </div>
+                                    <%--<a href="#feature" class="page-scroll btn btn-primary animated1">GET FREE MINS</a>--%>
+                                    <div class="free-trail-input col-md-6" style="margin:0px; padding-left:0px;">
+                                        <input type="text" placeholder="Mobile Number" onkeypress="return isNumber(event)" class="email-no" maxlength="<%= maxLength %>" id="txtNumber" autocomplete="off" style="outline:none !important" />
+                                        <button type="button" class="btn btn-primary send-btn" id="subscribe-button" value="Send"><i class="fa fa-send-o"></i></button>
+                                    </div>
+
+                                    <%-- <a href="#" class="chat" style="display: none">
+                                            <img src="images/chat-icon.png" width="60" style="width: 60px; display: block; position: absolute; top: 130%;">
+                                        </a>--%>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--/ Carousel item end -->
+                    </div>
+                    <!-- Carousel inner end-->
+                </div>
+                <!-- /carousel -->
+            </section>
+            <!-- End Home Page Slider -->
+            <asp:ContentPlaceHolder ID="BodyContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <footer class="footer-sec">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 f-cont" style="padding-bottom: 20px;">
+                            <div class="col-md-6 col-sm-6 col-xs-12 grp_logo">
+                                <a href="#">
+                                    <img src="images/f-logo.png" style="padding-top: 15px;"></a>
+
+                                <p>grpTalk is an audio conferencing call application available on Android, iOS and desktop . It enables as many as 500 (or even more) people to converse in a single conference call without the use of PINs. grpTalk is the brainchild of SMSCountry, which has been categorized as a Unified Communications as a Service (UCaaS) company since we also provide audio conferencing services.</p>
+                            </div>
+                            <div class="col-md-5 col-sm-6 col-xs-12 right-f-cont">
+                                <div class="col-md-12 col-xs-12 social-connect">
+                                    CONNECT WITH US :<br>
+
+                                    <div class="col-md-12" style="padding-left: 0px; padding: 30px 0px 30px;">
+                                        <label style="padding-right: 10px;">
+                                            <a href="https://www.facebook.com/grptalkconferencing/">
+                                                <img src="images/facebook@3x.png" style="width: 48px;"></a></label><label style="padding-right: 10px;"><a href="https://twitter.com/grptalk"><img src="images/twitter@3x.png" style="width: 48px;"></a></label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 f-cont-menu">
+                                    <ul class="f-cont-li-01">
+                                        <li><a href="#">Guide</a></li>
+                                        <li><a href="#">Live training</a></li>
+                                        <li><a href="#">Feedback</a></li>
+                                    </ul>
+                                    <ul class="f-cont-li-02">
+                                        <li><a href="#">Careers</a></li>
+                                        <li><a href="#">Case studies</a></li>
+
+                                    </ul>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-sm-12 col-xs-12 copyright text-center">
+                            Copyright 2017 GRPTALK by sms country. all rights reserved.
+                        </div>
+                    </div>
+                </div>
+
+            </footer>
+        </div>
+    </form>
+    <div id="modalAlert" class="modal fade" role="dialog" style="display: none;" aria-hidden="false" data-keyboard="false" data-backdrop="static">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: 0px ! important;">
+
+                    <button class="close" data-dismiss="modal" style="position: absolute; right: 15px; top: 10px; outline: none ! important" type="button">×</button>
+                </div>
+                <div class="modal-body" style="background: #fff; padding-bottom: 15px !important;">
+                    <span class="pull-center" style="margin-bottom: 0px ! important; margin-top: 0px; color: #606060;" id="alertMsg"></span>
+                </div>
+                <div class="modal-footer text-center margin-top-20 margin-bottom-20" style="border-top: none; text-align: center;">
+                    <button class="btn btn-primary" data-dismiss="modal" type="button">Ok</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="loader" style="display: none;">
+        <div class="spinner">
+            <div class="dot1"></div>
+            <div class="dot2"></div>
+        </div>
+    </div>
+    <input type="hidden" id="hdnCountryId" value="<%=countryId%>" />
+    <input type="hidden" id="hdnMaxLength" value="<%=maxLength%>" />
+    <input type="hidden" id="hdnMinLength" value="<%=minLength%>" />
+    <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <script src="js/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="scripts/index.js"></script>
+    <script type="text/javascript">
+
+        var path = window.location.pathname.toString().toLowerCase();
+        if (path.toLowerCase() != "/home") {
+            $("#backgoundImage").hide();
+        }
+        if (path.toLowerCase() == "/qrcodeloginpage.aspx") {
+            $("#page-top").hide();
+        }
+    </script>
+</body>
+</html>

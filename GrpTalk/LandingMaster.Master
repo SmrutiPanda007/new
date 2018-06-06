@@ -1,0 +1,332 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="LandingMaster.master.cs" Inherits="GrpTalk.LandingMaster" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <%-- <meta name="twitter:card" content="summary" />
+   <meta name="twitter:site" content="@grptalk" />
+    <meta name="twitter:title" content="grpTalk | Audio-Conferencing App" />
+    <meta name="twitter:description" content="grpTalk is a cloud-based dial-out audio conferencing app that is adaptable, inexpensive and allows 100+ people on one conference call. Learn more about grpTalk today." />
+    <meta name="twitter:image" content="https://www.grptalk.com/img/logo.png" />--%>
+
+
+
+    <meta name="twitter:card" content="app">
+    <meta name="twitter:site" content="@grptalk">
+    <meta name="twitter:description" content="grpTalk is a cloud-based dial-out audio conferencing app that is adaptable, inexpensive and allows 100+ people on one conference call. Learn more about grpTalk today.">
+    <meta name="twitter:app:country" content="In">
+    <meta name="twitter:app:name:iphone" content="grpTalk">
+    <meta name="twitter:app:id:iphone" content="1074172134">
+    <meta name="twitter:app:url:iphone" content="https://itunes.apple.com/in/app/grptalk/id1074172134?ls=1&mt=8">
+    <meta name="twitter:app:name:ipad" content="grpTalk">
+    <meta name="twitter:app:id:ipad" content="1074172134">
+    <meta name="twitter:app:url:ipad" content="https://itunes.apple.com/in/app/grptalk/id1074172134?ls=1&mt=8">
+    <meta name="twitter:app:name:googleplay" content="grpTalkl">
+    <meta name="twitter:app:id:googleplay" content="
+https://play.google.com/store/apps/details?id=com.mobile.android.grptalk">
+    <meta name="twitter:app:url:googleplay" content="https://play.google.com/store/apps/details?id=com.mobile.android.grptalk">
+    <!-- OGP TAgs -->
+    <meta property="og:site_name" content="grpTalk" />
+    <meta property="og:type" content="product" />
+    <meta property="og:title" content="grpTalk | Audio-Conferencing App" />
+    <meta property="og:url" content="https://www.grptalk.com/" />
+    <meta property="og:description" content="grpTalk is a cloud-based dial-out audio conferencing app that is adaptable, inexpensive and allows 100+ people on one conference call. 
+Learn more about grpTalk today." />
+    <!-- OGP TAgs ENd -->
+
+
+    <!-- Ninja slider CSS -->
+    <link href="css/ninja-slider.css" rel="stylesheet">
+    <script src="js/ninja-slider.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <style></style>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <!-- Custom CSS -->
+    <link href="css/custom.css" rel="stylesheet">
+    <link href="css/owl.carousel.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="scripts/index.js"></script>
+
+    <!-- Custom Fonts -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Abel" rel="stylesheet">
+    <link rel="shortcut icon" href="images/ico/favicon.ico" />
+
+    <style>
+        .navbar-custom.top-nav-collapse img {
+            width: 89%;
+            padding-top: 0px;
+            line-height: 70px !important;
+            position: relative;
+            top: -30px !important;
+            padding: 15px 15px !important;
+        }
+    </style>
+    <!-- Google Tag Manager -->
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-KXJF8CG');
+
+    </script>
+    <!-- End Google Tag Manager -->
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
+
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXJF8CG" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <input type="hidden" id="hdnCountryId" value="<%=countryId%>" />
+    <input type="hidden" id="hdnMaxLength" value="<%=maxLength%>" />
+    <input type="hidden" id="hdnMinLength" value="<%=minLength%>" />
+    <input type="hidden" id="hdnMissedCallNumber" value="<%=missedCallNumber%>" />
+
+    <div class="cta">
+        <i class="fa fa-phone"></i><span>For More Information<br>
+            Give Missed Call To<span class="font-conf-blue bold"> <%=missedCallNumber%></span>
+        </span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+                    <i class="fa fa-bars fa-2x"></i>
+                </button>
+                <a class="navbar-brand page-scroll" href="https://www.grptalk.com">
+                    <img src="img/logo.png" />
+                </a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+                <ul class="nav navbar-nav">
+                    <!-- Hidden li included to remove active class from about link when scrolled up past about section -->
+                    <li class="hidden active">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a href="https://www.grptalk.com"><i class="fa fa-home"></i>HOME</a>
+                    </li>
+                    <li>
+                        <a href="aboutus.aspx"><i class="fa fa-info"></i>About us</a></li>
+                    <li>
+                        <a href="how-it-works.aspx">How it works ?</a></li>
+                    <li><a href="products.aspx"><i class="fa fa-product-hunt" aria-hidden="true"></i>Products</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" id="freetrail" href="products.aspx" style="color: #fff; font-weight: bold; background-color: #e79e36; margin-left: 20px; padding: 14px 25px;">FREE TRIAL</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="modalAlert" class="modal fade" role="dialog" style="display: none;" aria-hidden="false" data-keyboard="false" data-backdrop="static">
+
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: 0px ! important;">
+
+                    <button class="close" data-dismiss="modal" style="position: absolute; right: 15px; top: 10px; outline: none ! important" type="button">×</button>
+                </div>
+                <div class="modal-body" style="background: #fff; padding-bottom: 15px !important;">
+                    <span class="pull-center" style="margin-bottom: 0px ! important; margin-top: 0px; color: #606060;" id="alertMsg"></span>
+                </div>
+                <div class="modal-footer text-center margin-top-20 margin-bottom-20" style="border-top: none; text-align: center;">
+                    <button class="btn btn-primary" data-dismiss="modal" type="button">Ok</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+
+<form id="form1" runat="server">
+    <div>
+        <script>
+
+            $("#freetrail").click(function (e) {
+                localStorage.setItem("Trail", 0);
+            });
+
+        </script>
+
+    </div>
+</form>
+
+</html>
+<asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+            </asp:contentplaceholder>
+<asp:contentplaceholder id="pagefooter" runat="server">
+    <section id="about-us" class="about-us-section-1" >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-sm-12">
+                    <div class="section-title text-center">
+                            <h3>Contact Us</h3>
+                            <div class="border"></div>
+                            <div class="border1"></div>
+                            
+                        </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="advantage-wrapper">
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="welcome-section-01 text-center">
+                        <div class="col-md-12">
+                        	<div class="welcome-section-body">
+                            	<i class="fa fa-phone fa-5x" aria-hidden="true" style="DISPLAY: inline-block;vertical-align: middle;width: 100%;    padding-top: 38px;"></i>
+                            </div>
+                        </div>
+                        <h4>Call us</h4>
+                        <p>Call us on <%=supportsNumber%> or give a missed call. <br>Our team will get back to you. </p>
+                        <p style="color:#428bca; font-size:18px; cursor:default !important"><a href='tel:<%=supportsNumber %>' >Call:  <%=supportsNumber%></a></p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="welcome-section-01 text-center">
+                        <div class="col-md-12">
+                        	<div class="welcome-section-body">
+                            	<i class="fa fa-laptop fa-5x" aria-hidden="true" style="DISPLAY: inline-block;vertical-align: middle;width: 100%;    padding-top: 38px;"></i>
+                            </div>
+                        </div>
+                        <h4>Request a Demo</h4>
+                        <input type="text" id="txtEmail" class="form-control emailid" placeholder="Enter your Email ID">
+                        <button type="button" id="btnGetDemo" class="btn btn-primary btn-lg buttons">Request a Demo <span style="text-align:right; padding-left:20px;"> > </span></button>
+
+                    </div>
+                </div>
+                
+                <div class="col-md-4 col-sm-12 col-xs-12">
+                    <div class="welcome-section-01 text-center">
+                        <div class="col-md-12">
+                        	<div class="welcome-section-body">
+                            	<i class="fa fa-mobile fa-5x" aria-hidden="true" style="DISPLAY: inline-block;vertical-align: middle;width: 100%;    padding-top: 38px;"></i>
+                            </div>
+                        </div>
+                        <h4>Get the app</h4>
+                       <input type="text" maxlength="<%=maxLength%>" onkeypress="return isNumber(event)" id="txtNumber2" class="form-control phonenumber" placeholder="Enter your mobile number">
+                        <button type="button" id="btnSubscribe" class="btn btn-primary btn-lg buttons">Get the App <span style="text-align:right; padding-left:20px;"> > 
+                        </span></button>
+                    </div>
+                </div>
+                
+            </div><!-- /.row -->            
+            </div>
+        </div><!-- /.container -->
+    </section>
+
+
+
+<!-- footer -->
+
+<footer id="footer" class="footer">
+			<div class="container">
+				<div class="row">
+				
+					<div class="col-md-6 col-sm-6 col-xs-12 wow fadeInUp animated footer-010" data-wow-duration="500ms">
+						<div class="footer-single">
+							<img src="img/logo.png" alt="" style="width: 30%;">
+							<p>grpTalk is an audio conferencing call application available on Android, iOS and desktop . It enables as many as 500 (or even more) people to converse in a single conference call without the use of PINs. grpTalk is the brainchild of SMSCountry, which has been categorized as a Unified Communications as a Service (UCaaS) company since we also provide audio conferencing services.</p>
+						</div>
+                        <div class="contact-details">
+							<!--<div class="con-info clearfix">
+								<i class="fa fa-home fa-lg"></i>
+								<span><%=address%></span>
+							</div>-->
+							
+							<div class="con-info clearfix">
+								<a href='tel:<%=supportsNumber %>' ><i class="fa fa-phone fa-lg"></i>
+								 &nbsp; Phone: <%=supportsNumber %></a>
+							</div>
+							
+							
+							<div class="con-info clearfix">
+								<i class="fa fa-envelope fa-lg"></i>
+								<a href="mailto:hello@grpTalk.com">&nbsp;Email: hello@grpTalk.com</a>
+							</div>
+						</div>
+					</div>
+				
+					
+					
+				
+					<div class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp animated hidden-xs" data-wow-duration="500ms" data-wow-delay="900ms">
+						<div class="footer-single">
+							<h6>Support</h6>
+							<ul>
+								<li><a href="terms-conditions.aspx">Terms & Conditions</a></li>
+								<li><a href="faqs.aspx">FAQ</a></li>
+								
+							</ul>
+						</div>
+					</div>
+                    
+                    <div class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp animated hidden-xs" data-wow-duration="500ms" data-wow-delay="300ms">
+						<div class="footer-single">
+							<h6>get the App </h6>
+							
+							<p style="width:100%; display:block;">
+                                <input type="text" id="txtEmail2" class="form-control phonenumber" placeholder="Enter your Email ID" style="width: 90%;
+   float:left;
+   display:block;
+    border-radius: 0px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    background: #222222;
+    border: 1px solid #222;"></p>
+     <button type="button" id="btnGetDemo2" class="btn btn-primary btn-lg buttons" style="    width: 90%;
+    height: 39px;
+    background: #428bca;
+    border: 1px solid #3778b1;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 20px;">Request a Demo <span style="text-align:right; padding-left:20px;"> > </span></button>
+						</div>
+                        <div class="contact-details">
+							<div class="con-info clearfix">
+								<a href="https://play.google.com/store/apps/details?id=com.mobile.android.grptalk"><i class="fa fa-android fa-3x" aria-hidden="true" style=" color: #68b445;"></i>
+								<span style="margin-top: 15px;">100000 Downloads</span></a>
+							</div>							
+							<div class="con-info clearfix">
+								<a href="https://itunes.apple.com/in/app/grptalk/id1074172134?ls=1&mt=8"><i class="fa fa-apple fa-3x" aria-hidden="true"></i>
+								<span style="margin-top: 15px;">10000+ Downloads</span></a>
+							</div>							
+						</div>
+					</div>
+				
+					
+				</div>
+				
+			</div>
+		</footer>
+        
+        <div class="copyrights">
+					<div class="col-md-12">
+						<p class="copyright text-center">
+							Copyright © 2017 <a href="http://www.smscountry.com/">SMSCountry Networks Pvt Ltd</a>. All rights reserved. Designed & developed by <a href="http://www.smscountry.com/">SMSCountry</a>
+						</p>
+					</div>
+				</div>
+
+</asp:contentplaceholder>

@@ -1,0 +1,416 @@
+/* New Contacts List Styles Begins Here */
+
+hr {
+    margin: 10px 0;
+}
+.btndisable
+        {
+            background: none repeat scroll 0 0 #ccc !important;
+            cursor: default !important;
+        }
+/* JSTree Menu Styles Begins */
+
+.jstree-default .jstree-wholerow-clicked,
+.jstree-wholerow .jstree-wholerow-clicked {
+  background: none;
+  border: 0;
+  background-color: rgb(231, 158, 54) !important;
+  box-shadow: none;
+}
+
+
+.jstree-default .jstree-wholerow {
+background: rgb(239, 239, 239) none repeat scroll 0 0;
+border-radius: 4px;
+}
+
+.jstree-default .jstree-wholerow-hovered,
+.jstree-wholerow .jstree-wholerow-hovered {
+  border: 0;
+/*  background-color: #eee;*/
+  background-color: rgb(255, 223, 181);
+  box-shadow: none;
+  border-radius: 4px;
+}
+
+.group-submenu {
+    padding: 2px;
+    position: absolute;
+    right: 0;
+    top: 6px;
+	color:rgb(102, 102, 102)
+}
+
+.jstree-default > .jstree-wholerow-ul .jstree-hovered > .group-submenu {
+    background: #d78f28 none repeat scroll 0 0;
+    border-radius: 3px;
+	color:#FFFFFF;
+}
+
+
+.submenu-chkbox {
+    /*background: rgb(215, 220, 222) none repeat scroll 0 0;*/
+    border-radius: 4px;
+    height: 19px;
+    padding: 2px;
+    right: 10px;
+    top: 5px;
+    width: 19px;
+	position:absolute;
+}
+
+.jstree-wholerow-ul .jstree-clicked > .submenu-chkbox {
+    background: rgb(215, 220, 222) none repeat scroll 0 0;
+}
+
+.jstree-default .jstree-node {
+    min-height: 30px;
+    line-height: 30px;
+	margin-top: 5px;
+	margin-left: 10px;	
+}
+.jstree-default .jstree-wholerow {
+    height: 30px;
+}
+
+.jstree-icon:empty {
+margin: 3px 0 0;
+}
+
+.jstree-default .jstree-anchor {
+    height: 30px;
+    line-height: 30px;
+	width: 90%;
+}
+
+/* JSTree Menu Styles Ends */
+
+.sleceted-cont-count {
+    font-size: 14px !important;
+    font-weight: 600;
+    line-height: 0;
+    padding: 16px 10px;
+}
+
+.group-search {
+    padding: 10px;
+}
+.contact-main {
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 4px;
+    padding: 8px;
+	margin-bottom: 10px;
+}
+.contact-left {
+    float: left;
+    margin: 0 10px 0 0;
+    width: 40px;
+}
+.contact-dp {
+    background: none repeat scroll 0 0 rgb(51, 121, 181);
+    border-radius: 50px;
+    color: rgb(255, 255, 255);
+    float: left;
+    font-size: 26px;
+    font-weight: 400;
+    height: 38px;
+    line-height: 18px;
+    padding: 10px;
+    text-align: center;
+    width: 38px;
+}
+
+.contact-body {
+    float: left;
+    width: 83%;
+	color: rgb(102, 102, 102);
+    font-size: 13px;
+}
+.btn-hover a {
+    color: rgb(68, 68, 68);
+}
+
+.btn-hover a:hover, .show-full-contact a:hover {
+    color: rgb(0, 0, 0);
+}
+.contact-body ul.list-unstyled {
+    margin-bottom: 0;
+}
+.contact-name {
+    color: rgb(51, 51, 51);
+    font-size: 14px;
+}
+.contact-dnd {
+    margin-left: 5px;
+}
+.contact-dnd i {
+    border: 1px solid;
+    border-radius: 50%;
+    font-size: 10px;
+    line-height: 13px;
+    margin-left: 3px;
+    padding: 0 2px;
+    text-align: center;
+    width: 16px !important;
+}
+.contact-dnd i.red {
+    color: hsl(7, 67%, 53%);
+}
+.contact-dnd i.green {
+    color: hsl(129, 52%, 44%);
+}
+.show-full-contact a {
+    color: rgb(68, 68, 68);
+    float: right;
+    margin-right: 9px;
+}
+.contact-email > a {
+	text-decoration:none;
+	color: rgb(102, 102, 102);
+}
+.btn-hover > span {
+    width: 5px;
+}
+.contact-main .btn-hover {
+	visibility:hidden;
+}
+.contact-main:hover .btn-hover {
+	visibility:visible;
+}
+
+/** .check-contact {
+	display:none;
+}
+ .contact-main:hover .check-contact {
+	display:block;
+}
+
+.contact-main:hover .contact-dp {
+	display:none;
+}
+**/
+.contact-name label {
+	margin-bottom: 0;
+}
+.contacts-list .btn-group-vertical .btn-default {
+    padding: 0 2px;
+	font-size: 12px;
+}
+
+
+h4.modal-title {
+    color: rgb(102, 102, 102);
+    font-weight: 600;
+}
+#modalheader > span {
+    color: rgb(51, 121, 181);
+}
+
+
+/* Move to Group Begins */
+
+#movetogroup_modal .modal-dialog {
+    width: 350px;
+}
+
+.well {
+    background-color: rgba(51, 121, 181, 0.15);
+}
+/* Move to Group Ends */
+
+@media (max-width:640px) {
+.contacts-list {
+    margin-top: 15px;
+}
+}
+@media (min-width:800px) {
+	
+
+.col-md-11.contact-col {
+    width: 95.5%;
+}
+
+.col-md-1.filter-col {
+    padding-left: 0;
+    width: 4.5%;
+}
+}
+
+@media (max-width:480px) {
+
+.col-xs-1.filter-col {
+    width: 8%;
+	padding-left: 0;
+}
+
+.contact-body {
+    width: 85%;
+}
+
+}
+
+@media (min-width:520px) {
+
+
+.col-xs-11.contact-col {
+    width: 95%;
+}
+
+.col-xs-1.filter-col {
+    padding-left: 0;
+    width: 5%;
+}
+.contact-body {
+    width: 89%;
+}
+
+}
+
+@media (min-width:640px) {
+.contact-body {
+    width: 82%;
+}
+}
+
+@media (min-width:1024px) {
+.modal-dialog {
+	width: 765px;
+}
+}
+
+@media (min-width:300px) and (max-width:360px) {
+
+.col-xs-1.filter-col {
+    padding-left: 0;
+    width: 11%;
+}
+
+.col-xs-11.contact-col {
+    width: 88.667%;
+}
+	
+.contact-main {
+    padding: 5px 5px 5px 8px;
+}	
+
+.contact-left {
+    bottom: 3px;
+    position: absolute;
+    right: 3px;
+	float:none;
+	width:auto;
+	margin:0;
+}
+
+.contact-dp {
+    background: rgb(51, 121, 181) none repeat scroll 0 0;
+    border-radius: 50px;
+    color: rgb(255, 255, 255);
+    float: left;
+    font-size: 20px;
+    font-weight: 400;
+    height: 30px;
+    line-height: 13px;
+    padding: 8px;
+    text-align: center;
+    width: 30px;
+}
+
+.contact-body {
+    font-size: 13px;
+    width: 100%;
+}
+.contact-name {
+    font-size: 13px;
+}
+
+.contact-main input[type=checkbox].css-checkbox {
+	position:absolute; 
+	z-index:-1000; 
+	left:-1000px; 
+	overflow: hidden; 
+	clip: rect(0 0 0 0); 
+	height:1px; 
+	width:1px; 
+	margin:-1px; 
+	padding:0; 
+	border:0;
+}
+
+.contact-main input.css-checkbox[type="checkbox"] + label.css-label {
+    background-position: 0 2px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
+    margin: 0;
+    padding-left: 28px;
+    vertical-align: middle;
+}
+
+.contact-main input[type=checkbox].css-checkbox:checked + label.css-label.checked {
+	background-position: 0 -26px;
+}
+
+.contact-main label.css-label {
+	background-image:url(/images/check_main1.png) !important;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+}
+
+@media (min-width:480px) {
+
+/* Begin Contacts Checkbox Styles */
+.contact-main input[type=checkbox].css-checkbox {
+	position:absolute; 
+	z-index:-1000; 
+	left:-1000px; 
+	overflow: hidden; 
+	clip: rect(0 0 0 0); 
+	height:1px; 
+	width:1px; 
+	margin:-1px; 
+	padding:0; 
+	border:0;
+}
+
+.contact-main input[type=checkbox].css-checkbox + label.css-label {
+ 	padding-left:40px;
+	height:38px; 
+	display:inline-block;
+	line-height:38px;
+	background-repeat:no-repeat;
+	background-position: 0 -1px;
+	/*font-size:20px;*/
+	vertical-align:middle;
+	cursor:pointer;
+	margin: 0;
+}
+
+.contact-main input[type=checkbox].css-checkbox:checked + label.css-label.checked {
+	background-position: 0 -41px;
+}
+
+.contact-main label.css-label {
+	background-image:url(/images/contact_check_radio.png);
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+
+/* End Contacts Checkbox Styles */
+
+}
+
+/* New Contacts List Styles Ends Here */

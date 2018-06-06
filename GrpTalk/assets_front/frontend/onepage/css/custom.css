@@ -1,0 +1,518 @@
+/* here you can put your own css to customize and override the theme */
+
+/* Begin Side Panel */
+.cta {
+    background: none repeat scroll 0 0 hsl(0, 0%, 90%);
+    position: fixed;
+    right: -270px;
+    bottom: 15%;
+    z-index: 99999;
+	transition: right 0.5s ease 0s, left 0.5s ease 0s;
+}
+
+.cta i {
+    background: none repeat scroll 0 0 hsl(208, 56%, 53%);
+    color: hsl(0, 0%, 100%);
+    float: left;
+    font-size: 36px;
+    margin-top: 0;
+    padding: 18px 12px 16px;
+}
+.cta > span {
+    color: hsl(0, 0%, 0%);
+    float: right;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 4px 10px;
+}
+.cta:hover {	
+	right:0;
+}
+
+/* End Side Panel */
+/* Begin Header Menu Sign Up */
+
+@media (min-width: 1025px) {
+.cust-nav {
+	margin-top:-5px !important;
+}
+.header-navigation .cust-nav a {
+	padding: 5px 10px;
+	background: none repeat scroll 0 0 hsl(208, 56%, 53%);
+    color: hsl(0, 0%, 100%) !important;
+}
+.header-navigation .cust-nav a:hover, .header-navigation .cust-nav a:active, .header-navigation .cust-nav a:focus {
+	color: hsl(0, 0%, 100%) !important;
+	background: none repeat scroll 0 0 hsl(208, 56%, 45%);
+}
+
+.margin-left-5 {
+	margin-left:5px !important;
+}
+.margin-right-5 {
+	margin-right:5px !important;
+}
+/*Just temp Begin*/
+.how-it-works-block .item {
+    margin-bottom: 30px;
+}
+
+/*.how-it-works-block h4 {
+	margin-bottom: 50px;
+}*/
+
+/*Just temp End*/
+}
+/* End Header Menu Sign Up */
+
+/* Begin Header Menu Mobi Toggler */
+.header .mobi-toggler:hover {
+    background-color: hsl(208, 56%, 53%);
+    border-color: hsl(208, 56%, 53%);
+}
+@media (max-width: 1024px) {
+.header-mobi-ext .header-navigation a:hover, .header-mobi-ext .header-navigation li.current a {
+    background-color: hsl(208, 56%, 53%);
+}
+}
+/* End Header Menu Mobi Toggler */
+
+/* Header Profile dropdown Begins */
+.header_profile {
+	float: right;
+	margin: 10px 0 0 25px;
+	padding: 0;
+	list-style: none;
+}
+.header_profile .dropdown > .dropdown-menu.pull-right::before, .dropdown-toggle > .dropdown-menu.pull-right::before, .btn-group > .dropdown-menu.pull-right::before {
+    left: auto;
+    right: 9px;
+}
+.header_profile .dropdown > .dropdown-menu::before, .dropdown-toggle > .dropdown-menu::before, .btn-group > .dropdown-menu::before {
+    border-bottom: 8px solid rgb(224, 224, 224);
+    border-left: 8px solid rgba(0, 0, 0, 0);
+    border-right: 8px solid rgba(0, 0, 0, 0);
+    content: "";
+    display: inline-block !important;
+    left: 9px;
+    position: absolute;
+    right: auto;
+    top: -8px;
+}
+.header_profile .dropdown > .dropdown-menu.pull-right::after, .dropdown-toggle > .dropdown-menu.pull-right::after, .btn-group > .dropdown-menu.pull-right::after {
+    left: auto;
+    right: 10px;
+}
+
+.header_profile .dropdown > .dropdown-menu::after, .dropdown-toggle > .dropdown-menu::after, .btn-group > .dropdown-menu::after {
+    border-bottom: 7px solid rgb(255, 255, 255);
+    border-left: 7px solid rgba(0, 0, 0, 0);
+    border-right: 7px solid rgba(0, 0, 0, 0);
+    content: "";
+    display: inline-block !important;
+    left: 10px;
+    position: absolute;
+    right: auto;
+    top: -7px;
+}
+.header_profile .dropdown-menu {
+margin: 5px 0 0;
+}
+
+.header_profile li a {
+	color: rgb(68, 139, 202) !important;
+}
+
+@media (max-width: 1024px) {
+.header_profile {
+	margin: 10px 15px 0 25px;
+}
+.header_profile li.dropdown {
+    height: 50px;
+}
+.header-mobi-ext .header-navigation {
+    clear: both;
+    padding: 0px 0 20px;
+}
+}
+
+.dropdown-menu li > a {
+	color: rgb(85, 85, 85) !important;
+}
+
+.header_profile .dropdown-menu li > a:hover, .header_profile .dropdown-menu .active > a, .header_profile .dropdown-menu .active > a:hover {
+    background-color: rgb(236, 236, 236);
+}
+/* Header Profile dropdown Ends */
+
+
+.break{display:block;}
+
+.font-conf-blue {
+	color: hsl(208, 56%, 53%);
+}
+.font-conf-orange {
+	color: hsl(35, 79%, 56%);
+}
+
+.bold-500 {
+	font-weight: 500;
+}
+.bold-600 {
+	font-weight: 600;
+}
+.content h4 {
+    font-size: 20px;
+}
+.tp-dottedoverlay.twoxtwo {
+    background: url("../../../images/gridtile.png") repeat scroll 0 0 hsla(0, 0%, 0%, 0);
+}
+
+.tp-caption.large_bold_white_25 {
+    line-height: 90px !important;
+    top: 130px !important;
+}
+.tp-caption.medium_text_shadow {
+    font-size: 30px !important;
+    top: 540px !important;
+}
+
+a, a:focus, a:hover, a:active {
+    color: hsl(35, 79%, 56%);
+}
+
+.header-navigation a:hover, .header-navigation li.current a {
+    color: hsl(35, 79%, 56%);
+}
+.slider-item-1 .large_bold_white span, .slider-item-2 .large_bold_white span {
+    color: hsl(35, 79%, 56%);
+}
+.content h1, .content h2 {
+color: hsl(35, 79%, 56%);
+}
+.content h1 strong, .content h2 strong, .content h3 strong, .content h4 strong {
+    color: hsl(208, 56%, 53%);
+}
+
+.about-block h4 {
+    margin-bottom: 30px;
+}
+.ab-trio {
+    padding-top: 0;
+    position: relative;
+	padding-bottom: 30px;
+}
+
+.ab-cirle-blue {
+    background: none repeat scroll 0 0 hsl(208, 56%, 53%);
+}
+.ab-cirle-red {
+    background: none repeat scroll 0 0 hsl(35, 79%, 56%);
+}
+.ab-cirle-green {
+	background: none repeat scroll 0 0 hsl(208, 56%, 53%);
+    right: 7%;
+}
+.services-block {
+	padding: 60px 0 90px;
+}
+.services-block .item {
+border-right: medium none;
+}
+.services-block .fa:after {
+    border-top: 9px solid hsl(208, 56%, 53%);
+}
+.services-block .fa {
+    background: none repeat scroll 0 0 hsl(208, 56%, 53%);
+}
+.services-block .price .fa {
+    background: none repeat scroll 0 0 hsl(35, 79%, 56%);
+}
+.services-block .price .fa:after {
+	border-top: 9px solid hsl(35, 79%, 56%);
+}
+.services-block .fa {
+padding: 32px 0 0;
+}
+
+.how-it-works-block {
+    padding-top: 60px;
+	margin-bottom: 80px !important;
+}
+.how-it-works-block .row {
+    padding-top: 40px;
+}
+.how-it-works-block .fa-5x {
+    line-height: 1em;
+    color: hsl(35, 79%, 56%);
+    margin-bottom: 10px;	
+}
+.choose-us-block .panel-group {
+    padding-top: 0px;
+}
+
+/* Pricing Block Begins */
+
+.prices-block {
+    background: url("../../../images/prices.jpg") no-repeat fixed 0 0 hsl(0, 0%, 100%);
+    padding: 55px 0 30px;
+    position: relative;
+    z-index: 0;
+}
+.pricing-item {
+min-height: 398px;
+}
+.pricing-head {
+    background: none repeat scroll 0 0 hsl(210, 29%, 29%);
+	margin: 0;
+}
+.pricing-head h3 {
+    font: 400 34px/1.2 "PT Sans Narrow",Arial,sans-serif;
+}
+.pi-price {
+    background: none repeat scroll 0 0 hsl(210, 29%, 29%);
+    padding-bottom: 10px;	
+    margin-bottom: 10px;
+}
+
+.pricing-content {
+    margin-bottom: 10px;
+}
+
+.pi-price > p {
+    color: hsl(0, 0%, 90%);
+}
+.pricing-item .table {
+	margin: 0;
+}
+.pricing-content .table td:first-child {
+    text-align: left;
+	font-size: 17px;
+}
+.pricing-content .table tr:first-child td {
+    border: medium none !important;
+}
+.pricing-content .table td:nth-child(2) {
+    text-align: right;
+	padding: 8px 4px;
+	color: hsl(211, 29%, 20%);
+}
+.pricing-content .table td:nth-child(3) {
+    font-size: 14px;
+    line-height: 25px;
+	padding: 9px 4px 8px;
+    text-align: left;
+}
+.pricing-footer .btn-default {
+background: none repeat scroll 0 0 hsl(208, 56%, 53%);
+}
+.pricing-footer .btn-default:hover, .pricing-footer .btn-default:active, .pricing-footer .btn-default:focus {
+    background: none repeat scroll 0 0 hsl(208, 56%, 45%);
+}
+.prices-block h2 {
+    background: none repeat scroll 0 0 hsla(0, 0%, 0%, 0.29);
+    line-height: 37px;
+    padding: 14px 0 15px;
+	color: #fff;
+}
+.prices-block h4 {
+    color: hsl(0, 0%, 100%);
+    margin-bottom: 30px;
+}
+.prices-block h2:after {
+    display: none;
+}
+
+.pi-price strong {
+	padding: 15px 0 0;
+	background: none;
+	margin-bottom: 5px;
+	height: auto;
+}
+
+.pi-price strong i {
+    font-size: 36px;
+    margin-bottom: 8px;
+	display: block;
+}
+
+.pi-price strong em {
+    font-size: 40px;
+}
+.pi-price strong:after {
+    border-left: medium none;
+    border-right: medium none;
+}
+.pricing-content {
+    padding: 0 15px 15px;
+}
+.pricing-content .list-unstyled {
+    text-align: center;
+}
+.pricing-content .list-unstyled li {
+    border-bottom: 1px solid hsl(0, 0%, 92%);
+	margin-bottom: 0;
+    padding: 8px 0;
+}
+.pricing-content .list-unstyled li:last-child {
+	border-bottom: none;
+}
+
+/* Pricing Block Ends */
+
+.message-block {
+padding: 10% 0 0;
+color: hsl(0, 0%, 100%);
+}
+.facts-block h2 {
+color: hsl(0, 0%, 100%);
+}
+.facts-block .item {
+    background: none repeat scroll 0 0 hsla(35, 79%, 56%, 0.92);
+}
+
+.contact-block {
+	padding-top: 60px;
+}
+/* Map Begins here */
+#map {
+      width: 100%;
+      height: 350px;
+    }
+.map_div {
+    background: url("../../../images/map.jpg") no-repeat top center hsla(0, 0%, 0%, 0);
+    height: 350px;
+}
+
+.pre-footer .container {
+    padding-top: 15px;
+    text-align: center;
+}
+.pre-footer address a {
+	color:hsl(0, 0%, 69%);
+}
+.footer .social-icons li {
+	float:left;
+}
+/* Map Ends Here */
+
+.copyright a {
+    color: hsl(35, 79%, 56%);
+    text-decoration: none;
+	cursor: pointer;
+}
+.copyright a:hover {
+	color: hsl(0, 0%, 100%);
+}
+
+.go2top:hover {
+    border: 2px solid hsl(35, 79%, 56%);
+    color: hsl(35, 79%, 56%);
+}
+
+
+/* Modal Styles Begins */
+
+.modal a {
+    font: 600 13px/1.4 "Open Sans",Arial,sans-serif;
+}
+.modal .modal-header {
+    border-bottom: medium none;
+    padding-bottom: 10px;
+}
+.modal-body {
+    padding: 0 25px 25px;
+}
+
+@media (min-width: 768px) {
+.modal-md {
+	width: 360px;
+}
+.modal-dialog {
+    margin: 100px auto 30px;
+}
+}
+/* Modal Styles Ends */
+
+
+/* Begin Login Modal Styles */
+
+#signup h3 {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 15px;
+	color: hsl(208, 56%, 53%);
+}
+.create-account {
+    border-top: 1px dotted hsl(0, 0%, 75%);
+    margin-top: 15px;
+    padding-top: 10px;
+}
+.create-account p {
+	margin: 0;
+}
+/* End Login Modal Styles */
+
+
+/* Begin Policy Modal Styles */
+.modal {
+border-radius: 6px !important;
+}
+#privacy-modal .modal-content {
+	/*background-color: hsl(0, 0%, 93%);*/
+	text-align:justify;
+}
+#privacy-modal .modal-header {
+    border-bottom: medium none;
+	margin-bottom: 5px;
+}
+#privacy-modal .modal-body {
+    padding: 0 15px 15px;
+}
+#privacy-modal h3 {
+    margin: 0 0 20px;
+    padding: 0;
+}
+#privacy-modal h4 {
+    margin-top: 20px;
+}
+.pre-scrollable {
+    max-height: 450px;
+	padding-right: 15px;
+    overflow-y: scroll;
+}
+.ver-inline-menu li.active a, .ver-inline-menu li.active i {
+    background: none repeat scroll 0 0 hsl(208, 56%, 45%);
+}
+.ver-inline-menu li.active:after {
+    border-left: 6px solid hsl(208, 56%, 45%);
+}
+.ver-inline-menu li.active a {
+    border-left: 2px solid hsl(208, 56%, 35%);
+}
+.ver-inline-menu li a {
+	padding: 10px 0 10px 10px;
+}
+.ver-inline-menu li.active:after {
+    top: 14px;
+}
+.list-custom {
+    margin-bottom: 20px;
+	padding-left: 5px;
+	list-style-image: url("../../../images/bullet.png");
+}
+.list-custom > li {	
+    margin: 0 0 10px 30px;
+}
+/* End Policy Modal Styles */
+
+@media (max-width: 980px) {
+.how-it-works-block .item {
+    margin-bottom: 30px;
+}
+.how-it-works-block .item:last-child {
+    margin-bottom: 0px;
+}
+}
+

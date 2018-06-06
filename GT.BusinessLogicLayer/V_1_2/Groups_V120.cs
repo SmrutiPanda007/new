@@ -1,0 +1,1929 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Web;
+using System.Net;
+using GT.DataAccessLayer;
+using GT.Utilities.Properties;
+using GT.Utilities;
+using System.Configuration;
+using System.Diagnostics;
+using System.Data.SqlClient;
+
+
+
+namespace GT.BusinessLogicLayer.V_1_2
+{
+    public class Groups_V120
+    {
+        /// <summary>
+        /// This Function is used to Leave a memeber from grpCall 
+        /// </summary>
+        /// <param name="sConnString"></param>
+        /// <param name="paramObj"></param>
+        /// <returns></returns>
+        public JObject MemberLeaveFromGrpCall(string sConnString, int ConferenceID, int userId)
+        {
+            JObject respLeaveGroupCall = new JObject();
+            try
+            {
+
+                int grpTalkID = ConferenceID;
+                short retVal = 0;
+                short leaveStatus = 0;
+                short osID = 0;
+                string hostMobile = "";
+                string grpTalkName = "";
+                string schTime = "";
+                string deviceToken = "";
+                string retMessage = "";
+                string notificationMsg = "";
+                string leaveMemName = "";
+                DataAccessLayer.V_1_2.Groups_V120 leaveGroupObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                leaveGroupObj.MemberLeaveFromGrpCall(userId, grpTalkID, out leaveStatus, out grpTalkName, out deviceToken, out osID, out hostMobile, out schTime, out retVal, out retMessage, out leaveMemName);
+                if (retVal == 0)
+                {
+                    respLeaveGroupCall = new JObject(new JProperty("Success", false),
+                                                   new JProperty("Message", retMessage));
+                }
+                else
+                {
+                    GT.BusinessLogicLayer.NotificationPush pushObj = new GT.BusinessLogicLayer.NotificationPush();
+                    if (leaveStatus == 1) //scheduled grpcall with less than 3 mebers and schedule canceled case
+                    {
+                        notificationMsg = leaveMemName + " has left the grpTalk " + grpTalkName + ", your upcoming grpTalk @ " + schTime + " has been cancelled because members ";
+                        notificationMsg = notificationMsg + " are less than 3 members. Add more members and re-schedule your grpTalk";
+                    }
+                    else if (leaveStatus == 2) //Normal grpcall with less than 3 mebers and grpcall updated to inactive
+                    {
+                        notificationMsg = leaveMemName + " has left the grpTalk " + grpTalkName + ", You do not have enough members in your group add more members to continue grpTalk";
+                    }
+                    else if (leaveStatus == 3) //more than 2 members,just intimation to host
+                    {
+                        notificationMsg = leaveMemName + " has left the groupTalk " + grpTalkName;
+                    }
+                    if (osID == 1)
+                    {
+                        pushObj.IOSpush(notificationMsg, deviceToken);
+                    }
+                    else
+                    {
+                        pushObj.sendAndroidPush(notificationMsg, deviceToken);
+                    }
+                    respLeaveGroupCall = new JObject(new JProperty("Success", true),
+                                                  new JProperty("Message", retMessage),
+                                                  new JProperty("ConferenceID", grpTalkID));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("exception at MemberLeaveFromGrpCall : " + ex.ToString());
+                respLeaveGroupCall = new JObject(new JProperty("Success", false),
+                     new JProperty("Message", "Something Went Wrong"));
+            }
+            return respLeaveGroupCall;
+        }
+        /// <summary>
+        /// This Function is used to Create a GroupCall
+        /// </summary>
+        public JObject CreateGroupCall(string sConnString, JObject paramObj, int userId)
+        {
+            BusinessHelper helperObj = new BusinessHelper();
+            helperObj.connString = sConnString;
+            DataTable grpCallMembers = null;
+            JObject responseObj = new JObject();
+            JObject grpCallInfObj = new JObject();
+            JArray jarrAllPrt = new JArray();
+            JArray jarryDnd = new JArray();
+            JObject upComingObj = new JObject();
+            JArray jarrUpComing = new JArray();
+            JArray historyJarr = new JArray();
+            DataTable MembersForThisGroup = new DataTable();
+            DataSet grpCallInfo = new DataSet();
+            Int16 retVal = 0;
+            int HostIsDnd;
+            string retMessage = "";
+            bool DndFlag = false;
+            string MemberName = "";
+            string MemberMobile = "";
+
+
+            MembersForThisGroup.Columns.Add("Name", typeof(string));
+            MembersForThisGroup.Columns.Add("Mobile", typeof(string));
+            MembersForThisGroup.Columns.Add("IsDndCheck", typeof(int));
+
+
+
+
+            foreach (JObject _Member in (JArray)paramObj.SelectToken("Participants"))
+            {
+                foreach (JProperty _Token in _Member.Properties())
+                {
+                    if (_Token.Name == "IsDndFlag")
+                    {
+                        DndFlag = Convert.ToBoolean(_Token.Value.ToString());
+                    }
+                    else
+                    {
+                        MemberName = _Token.Name;
+                        MemberMobile = _Token.Value.ToString();
+                    }
+                }
+
+                MembersForThisGroup.Rows.Add(MemberName, MemberMobile, DndFlag);
+            }
+
+
+            grpCallMembers = helperObj.GetConferenceMebers(MembersForThisGroup, userId, "v1.1", out HostIsDnd);
+
+            if (grpCallMembers == null)
+            {
+                helperObj.NewProperty("Success", false);
+
+                helperObj.NewProperty("Message", "Error parsing participants");
+                HttpContext.Current.Response.Write(helperObj.GetResponse());
+                return helperObj.GetResponse();
+            }
+
+            grpcreate createObj = new grpcreate();
+            createObj.grpCallName = paramObj.SelectToken("GroupCallName").ToString();
+            createObj.grpCallDate = paramObj.SelectToken("SchduledDate").ToString();
+            createObj.grpCallTime = paramObj.SelectToken("SchduledTime").ToString();
+            createObj.SchType = Convert.ToInt16(paramObj.SelectToken("SchType").ToString());
+            createObj.DaysInWeek = paramObj.SelectToken("WeekDays").ToString();
+            createObj.ReminderMins = Convert.ToInt32(paramObj.SelectToken("Reminder").ToString());
+            createObj.IsMuteDial = Convert.ToInt16(paramObj.SelectToken("IsMuteDial").ToString());
+
+
+            DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+            try
+            {
+                grpCallInfo = groupsObj.CreateGrpCall(grpCallMembers, userId, createObj, HostIsDnd, out retVal, out retMessage);
+
+                if (retVal == 1)
+                {
+                    var _with1 = grpCallInfo.Tables[1];
+                    if (_with1.Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= _with1.Rows.Count - 1; i++)
+                        {
+                            jarrAllPrt.Add(new JObject(new JProperty("Name", _with1.Rows[i]["member_name"]),
+                                new JProperty("Mobile", _with1.Rows[i]["mobile_number"])));
+                        }
+                    }
+
+                    var _with2 = grpCallInfo.Tables[2];
+
+                    if (_with2.Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= _with2.Rows.Count - 1; i++)
+                        {
+                            jarryDnd.Add(new JObject(new JProperty("Name", _with2.Rows[i]["member_name"]),
+                                new JProperty("Mobile", _with2.Rows[i]["mobile_number"]),
+                                new JProperty("IsDnd", _with2.Rows[i]["is_dnd"]),
+                                new JProperty("IsOptedIn", _with2.Rows[i]["IsOptedIn"]),
+                                new JProperty("IsOptinSent", _with2.Rows[i]["OptedInstructionsSent"])));
+
+                        }
+                    }
+
+
+                    if (grpCallInfo.Tables[3].Rows.Count > 0)
+                    {
+                        var _with3 = grpCallInfo.Tables[3];
+
+
+                        upComingObj = new JObject(new JProperty("BatchID", ""),
+                            new JProperty("StartTime", _with3.Rows[0]["StartTime"]),
+                            new JProperty("Duration", _with3.Rows[0]["Duration"]),
+                            new JProperty("CallPrice", _with3.Rows[0]["CallPrice"]),
+                            new JProperty("Invites", _with3.Rows[0]["Invites"]),
+                            new JProperty("TimeToGo", ""),
+                            new JProperty("Connected", ""));
+
+                        jarrUpComing.Add(upComingObj);
+                    }
+
+                    var _with4 = grpCallInfo.Tables[0];
+                    if (_with4.Rows.Count > 0)
+                    {
+                        grpCallInfObj = new JObject(new JProperty("GroupID", _with4.Rows[0]["ConferenceId"]),
+                                                     new JProperty("GroupName", createObj.grpCallName),
+                                                     new JProperty("TotalMembers", _with4.Rows[0]["totalmembers"]),
+                                                     new JProperty("SchduledDate", Convert.ToDateTime(createObj.grpCallDate).ToString("MMM dd yyyy")),
+                                                     new JProperty("SchduledTime", createObj.grpCallTime),
+                                                     new JProperty("CreatedTime", DateTime.Now.ToString("MMM dd yyyy")),
+                                                     new JProperty("IsStarted", "0"),
+                                                     new JProperty("LastDate", ""),
+                                                     new JProperty("LastGroupCall", "Jan  1 1900 12:00AM"),
+                                                     new JProperty("StartDateTime", _with4.Rows[0]["ConferenceStartTime"]),
+                                                     new JProperty("SchType", createObj.SchType),
+                                                     new JProperty("IsMuteDial", createObj.IsMuteDial),
+                                                     new JProperty("GrpCallRoom", _with4.Rows[0]["conferenceroom"]),
+                                                     new JProperty("ParticipantNames", _with4.Rows[0]["participants"]),
+                                                     new JProperty("WeekDays", createObj.DaysInWeek),
+                                                     new JProperty("IsCreated", "1"),
+                                                     new JProperty("CreatedBy", _with4.Rows[0]["CreatedBy"]),
+                                                     new JProperty("CreatedByMobile", _with4.Rows[0]["CreatedByMobile"]),
+                                                     new JProperty("History", historyJarr),
+                                                     new JProperty("Upcoming", jarrUpComing),
+                                                     new JProperty("Participants", jarrAllPrt));
+                    }
+
+                    responseObj = new JObject(new JProperty("Success", true),
+                                             new JProperty("Message", "Ok"),
+                                             new JProperty("GroupCallDetails", grpCallInfObj),
+                                             new JProperty("DndContacts", jarryDnd));
+
+                }
+                else
+                {
+                    responseObj = new JObject(new JProperty("Success", false), new JProperty("Message", retMessage));
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception in CreateGroupCallBussiness " + ex.ToString());
+                responseObj = new JObject(new JProperty("Success", false),
+                     new JProperty("Message", "Something Went Wrong"));
+            }
+            return responseObj;
+        }
+
+
+        /// <summary>
+        /// This Function is used to Edit a GroupCall
+        /// </summary>
+        public JObject EditGroupCall(string sConnString, JObject paramObj, int userId)
+        {
+
+            BusinessHelper helperObj = new BusinessHelper();
+            helperObj.connString = sConnString;
+            JObject Jobj = new JObject();
+            JArray upComingJarr = new JArray();
+            JObject upComingObj = new JObject();
+            JArray historyJarr = new JArray();
+            JObject historyJObj = new JObject();
+            JArray jarrAllPrt = new JArray();
+            JArray prtJarr = new JArray();
+            JArray dndJarr = new JArray();
+            JObject grpCallObj = new JObject();
+            JObject grpCallInfObj = new JObject();
+            DataTable membersForThisGroupCall = new DataTable();
+            JObject responseObj = new JObject();
+            DataTable grpCallMembers = null;
+            DataSet grpCallInfo = new DataSet();
+            Int16 retVal = 0;
+            int HostIsDND;
+            string RetMessage = "";
+            bool DndFlag = false;
+            string MemberName = "";
+            string MemberMobile = "";
+            JObject leaveParticipantsObj = new JObject();
+            JArray leaveParticipantsJarr = new JArray();
+
+
+            membersForThisGroupCall.Columns.Add("Name", typeof(string));
+            membersForThisGroupCall.Columns.Add("Mobile", typeof(string));
+            membersForThisGroupCall.Columns.Add("IsDndCheck", typeof(int));
+
+            foreach (JObject _member in (JArray)paramObj.SelectToken("Participants"))
+            {
+                foreach (JProperty _Token in _member.Properties())
+                {
+                    if (_Token.Name == "IsDndFlag")
+                    {
+                        DndFlag = Convert.ToBoolean(_Token.Value.ToString());
+                    }
+                    else
+                    {
+                        MemberName = _Token.Name;
+                        MemberMobile = _Token.Value.ToString();
+                    }
+                }
+
+                membersForThisGroupCall.Rows.Add(MemberName, MemberMobile, DndFlag);
+            }
+            grpCallMembers = helperObj.GetConferenceMebers(membersForThisGroupCall, userId, "v1.0.1", out HostIsDND);
+
+            if (grpCallMembers == null)
+            {
+                helperObj.NewProperty("Success", false);
+
+                helperObj.NewProperty("Message", "Error parsing participants");
+                HttpContext.Current.Response.Write(helperObj.GetResponse());
+                return helperObj.GetResponse();
+            }
+            grpEdit editObj = new grpEdit();
+            editObj.grpcallID = Convert.ToInt32(paramObj.SelectToken("GroupID").ToString());
+            editObj.grpCallName = paramObj.SelectToken("GroupCallName").ToString();
+            editObj.grpCallDate = paramObj.SelectToken("SchduledDate").ToString();
+            editObj.grpCallTime = paramObj.SelectToken("SchduledTime").ToString();
+            editObj.SchType = Convert.ToInt16(paramObj.SelectToken("SchType").ToString());
+            editObj.DaysInWeek = paramObj.SelectToken("WeekDays").ToString();
+            editObj.ReminderMins = Convert.ToInt32(paramObj.SelectToken("Reminder").ToString());
+            editObj.IsMuteDial = Convert.ToInt16(paramObj.SelectToken("IsMuteDial").ToString());
+
+
+            DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+            try
+            {
+                grpCallInfo = groupsObj.EditGroupCall(grpCallMembers, userId, editObj, out retVal, out RetMessage);
+
+                if (retVal == 1)
+                {
+                    var _with1 = grpCallInfo.Tables[1];
+
+                    if (_with1.Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= _with1.Rows.Count - 1; i++)
+                        {
+                            prtJarr.Add(new JObject(new JProperty("Name", _with1.Rows[i]["member_name"]),
+                                new JProperty("Mobile", _with1.Rows[i]["mobile_number"])));
+                        }
+                    }
+
+
+                    var _with2 = grpCallInfo.Tables[2];
+                    if (_with2.Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= _with2.Rows.Count - 1; i++)
+                        {
+                            dndJarr.Add(new JObject(new JProperty("Name", _with2.Rows[i]["member_name"]),
+                                new JProperty("Mobile", _with2.Rows[i]["mobile_number"]),
+                                new JProperty("IsDnd", _with2.Rows[i]["is_dnd"]),
+                                new JProperty("IsOptedIn", _with2.Rows[i]["IsOptedIn"]),
+                                new JProperty("IsOptinSent", _with2.Rows[i]["OptedInstructionsSent"])));
+                        }
+                    }
+
+
+                    var _with3 = grpCallInfo.Tables[3];
+                    if (grpCallInfo.Tables[3].Rows.Count > 0)
+                    {
+                        upComingObj = new JObject(new JProperty("BatchID", ""),
+                            new JProperty("StartTime", _with3.Rows[0]["StartTime"]),
+                            new JProperty("Duration", _with3.Rows[0]["Duration"]),
+                            new JProperty("CallPrice", _with3.Rows[0]["CallPrice"]),
+                            new JProperty("Invites", _with3.Rows[0]["Invites"]),
+                            new JProperty("TimeToGo", _with3.Rows[0]["TimeToGo"]),
+                            new JProperty("Connected", ""));
+
+                        upComingJarr.Add(upComingObj);
+                    }
+
+                    var _with4 = grpCallInfo.Tables[4];
+                    if (grpCallInfo.Tables[4].Rows.Count > 0)
+                    {
+                        for (int j = 0; j <= _with4.Rows.Count - 1; j++)
+                        {
+                            historyJObj = new JObject(new JProperty("BatchID", _with4.Rows[j]["BatchID"]),
+                                new JProperty("StartTime", _with4.Rows[j]["StartTime"]),
+                                new JProperty("Duration", _with4.Rows[j]["Duration"]),
+                                new JProperty("CallPrice", _with4.Rows[j]["CallPrice"]),
+                                new JProperty("Invites", _with4.Rows[j]["Invites"]),
+                                new JProperty("TimeToGo", _with4.Rows[j]["TimeToGo"]),
+                                new JProperty("Connected", _with4.Rows[j]["Connected"]));
+
+                            historyJarr.Add(historyJObj);
+                        }
+
+
+                    }
+                    if (grpCallInfo.Tables[5].Rows.Count > 0)
+                    {
+                        for (int j = 0; j <= grpCallInfo.Tables[5].Rows.Count - 1; j++)
+                        {
+                            leaveParticipantsObj = new JObject(new JProperty("Name", grpCallInfo.Tables[5].Rows[j]["member_name"]),
+                                       new JProperty("Mobile", grpCallInfo.Tables[5].Rows[j]["mobile_number"]));
+                            leaveParticipantsJarr.Add(leaveParticipantsObj);
+                        }
+
+                    }
+                    var _with5 = grpCallInfo.Tables[0];
+
+                    if (_with5.Rows.Count > 0)
+                    {
+                        string _Cdate1 = editObj.grpCallDate.Replace("-", "/");
+                        grpCallObj = new JObject(new JProperty("GroupID", _with5.Rows[0]["ConferenceId"]),
+                                                new JProperty("GroupName", editObj.grpCallName),
+                                                new JProperty("TotalMembers", _with5.Rows[0]["totalmembers"]),
+                                                new JProperty("SchduledDate", Convert.ToDateTime(editObj.grpCallDate).ToString("MMM dd yyyy")),
+                                                new JProperty("SchduledTime", editObj.grpCallTime),
+                                                new JProperty("CreatedTime", DateTime.Now.ToString("MMM dd yyyy")),
+                                                new JProperty("IsStarted", "0"),
+                                                new JProperty("LastDate", ""),
+                                                new JProperty("LastGroupCall", "Jan  1 1900 12:00AM"),
+                                                new JProperty("StartDateTime", _with5.Rows[0]["ConferenceStartTime"]),
+                                                new JProperty("SchType", editObj.SchType),
+                                                new JProperty("IsMuteDial", editObj.IsMuteDial),
+                                                new JProperty("GrpCallRoom", _with5.Rows[0]["conferenceroom"]),
+                                                new JProperty("ParticipantNames", _with5.Rows[0]["participants"]),
+                                                new JProperty("WeekDays", editObj.DaysInWeek),
+                                                new JProperty("IsCreated", "1"),
+                                                new JProperty("CreatedBy", _with5.Rows[0]["CreatedBy"]),
+                                                new JProperty("CreatedByMobile", _with5.Rows[0]["CreatedByMobile"]),
+                                                new JProperty("History", historyJarr),
+                                                new JProperty("Upcoming", upComingJarr),
+                                                new JProperty("Participants", prtJarr),
+                                                new JProperty("LeaveParticipants", leaveParticipantsJarr));
+                    }
+
+                    responseObj = new JObject(new JProperty("Success", true),
+                        new JProperty("Message", "Ok"),
+                        new JProperty("GroupCallDetails", grpCallObj),
+                        new JProperty("DndContacts", dndJarr));
+                }
+                else
+                {
+                    responseObj = new JObject(new JProperty("Success", false), new JProperty("Message", RetMessage));
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception in EditGroupCallBussiness " + ex.ToString());
+                responseObj = new JObject(new JProperty("Success", false),
+                    new JProperty("Message", "Something Went Wrong"));
+            }
+            return responseObj;
+        }
+
+        /// <summary>
+        /// This Function is Used to Get AllGrpCalls
+        /// </summary>
+        public JObject GetAllGroupCalls(string sConnString, int userId, int AppSource, string DeviceToken, string AppVersion, string TimeStamp)
+        {
+            DataSet allGrpCalls = new DataSet();
+            JObject allGrpCallsObj = new JObject();
+            JObject historyObj = new JObject();
+            JObject upComingObj = new JObject();
+            JObject leaveParticipantsObj = new JObject();
+            JArray allGrpCallsJarr = new JArray();
+            JArray membersJarr = new JArray();
+            JObject MemObj = new JObject();
+            JArray historyJarr = new JArray();
+            JArray deleteJarr = new JArray();
+            JArray upcomingJarr = new JArray();
+            JArray leaveParticipantsJarr = new JArray();
+            int retVal = 0;
+            int count = 0;
+            string retMessage = "", duration = "", timeToGo = "", startTime = "";
+            int isMuteDial = 0;
+            double userBal;
+            string profileImagePath = "";
+            string outTimeStamp = "";
+            string userCurrentDate = "";
+            string userRegTimeStamp = "";
+            int bonusDuration = 0;
+            string bonusexpiryTime = "";
+            int maxConcurrency = 0;
+            bool isBonusAvailable;
+            string CurrentAppVersion = "";
+
+
+            try
+            {
+                DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                allGrpCalls = groupsObj.GetAllGroupCalls(userId, AppSource, DeviceToken, AppVersion, TimeStamp, out outTimeStamp, out count, out userBal, out profileImagePath, out userCurrentDate, out userRegTimeStamp, out retVal, out retMessage);
+
+                if (retVal == 1)
+                {
+                    if (allGrpCalls.Tables[0].Rows.Count > 0)
+                    {
+                        for (int i = 0; i <= allGrpCalls.Tables[0].Rows.Count - 1; i++)
+                        {
+                            membersJarr = new JArray();
+                            MemObj = new JObject();
+                            DataRow[] result = allGrpCalls.Tables[2].Select("ConfID =" + allGrpCalls.Tables[0].Rows[i]["ConferenceId"] + " ");
+                            foreach (DataRow row in result)
+                            {
+                                MemObj = new JObject(new JProperty("Name", row["Name"]),
+                                        new JProperty("Mobile", row["Mobile"]));
+                                membersJarr.Add(MemObj);
+                            }
+                            leaveParticipantsJarr = new JArray();
+                            leaveParticipantsObj = new JObject();
+                            DataRow[] leave = allGrpCalls.Tables[6].Select("conf_id=" + allGrpCalls.Tables[0].Rows[i]["ConferenceId"] + " ");
+                            foreach (DataRow leaverow in leave)
+                            {
+                                leaveParticipantsObj = new JObject(new JProperty("Name", leaverow["member_name"]),
+                                        new JProperty("Mobile", leaverow["mobile_number"]));
+                                leaveParticipantsJarr.Add(leaveParticipantsObj);
+                            }
+
+
+                            historyJarr = new JArray();
+                            if (allGrpCalls.Tables[1].Rows.Count > 0)
+                            {
+                                var _with1 = allGrpCalls.Tables[1];
+
+                                for (int j = 0; j <= _with1.Rows.Count - 1; j++)
+                                {
+                                    if (Convert.ToInt32(_with1.Rows[j]["ConfID"]) == Convert.ToInt32(allGrpCalls.Tables[0].Rows[i]["ConferenceId"]))
+                                    {
+                                        historyObj = new JObject(new JProperty("BatchID", _with1.Rows[j]["BatchID"]),
+                                            new JProperty("TimeToGo", _with1.Rows[j]["Timetogo"]),
+                                            new JProperty("StartTime", (_with1.Rows[j]["StartTime"]).ToString().Replace("  ", " ")),
+                                            new JProperty("Duration", _with1.Rows[j]["Duration"]),
+                                            new JProperty("CallPrice", _with1.Rows[j]["CallPrice"]),
+                                            new JProperty("Invites", _with1.Rows[j]["Invites"]),
+                                            new JProperty("Connected", _with1.Rows[j]["Connected"]));
+                                        historyJarr.Add(historyObj);
+
+                                    }
+
+                                }
+
+                            }
+
+                            upcomingJarr = new JArray();
+                            if (allGrpCalls.Tables[3].Rows.Count > 0)
+                            {
+                                var _with2 = allGrpCalls.Tables[3];
+                                for (int j = 0; j <= _with2.Rows.Count - 1; j++)
+                                {
+                                    if (Convert.ToInt32(_with2.Rows[j]["ConfID"]) == Convert.ToInt32(allGrpCalls.Tables[0].Rows[i]["ConferenceId"]))
+                                    {
+                                        upComingObj = new JObject(new JProperty("BatchID", ""),
+                                            new JProperty("TimeToGo", _with2.Rows[j]["Timetogo"]),
+                                        new JProperty("StartTime", _with2.Rows[j]["StartTime"]),
+                                        new JProperty("Duration", _with2.Rows[j]["Duration"]),
+                                        new JProperty("CallPrice", _with2.Rows[j]["CallPrice"]),
+                                        new JProperty("Invites", _with2.Rows[j]["Invites"]),
+                                        new JProperty("Connected", ""));
+
+                                        upcomingJarr.Add(upComingObj);
+                                    }
+                                }
+                            }
+
+                            deleteJarr = new JArray();
+
+                            if (allGrpCalls.Tables[4].Rows.Count > 0)
+                            {
+                                var _with4 = allGrpCalls.Tables[4];
+
+                                foreach (DataRow _row in _with4.Rows)
+                                {
+                                    foreach (DataColumn _column in _with4.Columns)
+                                    {
+                                        deleteJarr.Add(_row["conf_id"]);
+                                    }
+
+                                }
+                            }
+
+
+                            var _with3 = allGrpCalls.Tables[0];
+
+                            if (Convert.ToBoolean(_with3.Rows[i]["ismutedial"]) == true)
+                            {
+                                isMuteDial = 1;
+                            }
+                            else if (Convert.ToBoolean(_with3.Rows[i]["ismutedial"]) == false)
+                            {
+                                isMuteDial = 0;
+                            }
+                            else
+                            {
+                                isMuteDial = 0;
+                            }
+                            if (string.IsNullOrEmpty(_with3.Rows[i]["duration"].ToString()) == true)
+                            {
+                                duration = "0";
+                            }
+                            else
+                            {
+                                duration = _with3.Rows[i]["duration"].ToString();
+                            }
+                            if (_with3.Rows[i]["starttime"] != null)
+                            {
+                                timeToGo = "0";
+                                startTime = "0";
+                            }
+                            else
+                            {
+                                timeToGo = getTimeString(_with3.Rows[i]["starttime"].ToString());
+                                startTime = _with3.Rows[i]["confdonetime"].ToString().Substring(0, 11);
+
+                            }
+
+                            allGrpCallsJarr.Add(new JObject(new JProperty("GroupID", _with3.Rows[i]["conferenceid"].ToString()),
+                                                new JProperty("GroupName", _with3.Rows[i]["conferencename"].ToString()),
+                                                new JProperty("TotalMembers", _with3.Rows[i]["totalmembers"].ToString()),
+                                                new JProperty("CreatedTime", _with3.Rows[i]["created"].ToString()),
+                                                new JProperty("LastGroupCall", _with3.Rows[i]["confdonetime"].ToString()),
+                                                new JProperty("StartDateTime", _with3.Rows[i]["startdatetime"].ToString()),
+                                                new JProperty("SchduledDate", _with3.Rows[i]["startdate"].ToString()),
+                                                new JProperty("SchduledTime", _with3.Rows[i]["start_time"].ToString()),
+                                                new JProperty("IsStarted", _with3.Rows[i]["InProgress"].ToString()),
+                                                new JProperty("LastDate", startTime),
+                                                new JProperty("SchType", _with3.Rows[i]["schtype"].ToString()),
+                                                new JProperty("IsMuteDial", isMuteDial),
+                                                new JProperty("GrpCallRoom", _with3.Rows[i]["conf_room"].ToString()),
+                                                new JProperty("WeekDays", _with3.Rows[i]["weekdays"].ToString()),
+                                                new JProperty("IsCreated", _with3.Rows[i]["iscreated"].ToString()),
+                                                new JProperty("CreatedBy", _with3.Rows[i]["CreatedBy"].ToString()),
+                                                new JProperty("CreatedByMobile", _with3.Rows[i]["CreatedByMobile"].ToString()),
+                                                new JProperty("ParticipantNames", _with3.Rows[i]["names"].ToString()),
+                                                new JProperty("History", historyJarr),
+                                                new JProperty("Upcoming", upcomingJarr),
+                                                new JProperty("LeaveParticipants", leaveParticipantsJarr),
+                                                new JProperty("Participants", membersJarr)));
+
+
+                        }
+
+                    }
+                    if (AppSource == 1)
+                    {
+                        CurrentAppVersion = System.Configuration.ConfigurationManager.AppSettings["IOSCurrentAppVersion"].ToString();
+                    }
+                    else
+                    {
+                        if (HttpContext.Current.Request.Headers["AppVersion"].ToString() == "1.2.1")
+                        {
+                            CurrentAppVersion = "1.2.1";
+                        }
+                        else
+                        {
+                            CurrentAppVersion = System.Configuration.ConfigurationManager.AppSettings["AndroidCurrentAppVersion"].ToString();
+                        }
+
+                    }
+                    bonusDuration = Convert.ToInt32(allGrpCalls.Tables[5].Rows[0]["BonusDuration"]);
+                    bonusexpiryTime = allGrpCalls.Tables[5].Rows[0]["BonusExpirationTime"].ToString();
+                    maxConcurrency = Convert.ToInt32(allGrpCalls.Tables[5].Rows[0]["MaxConcurrency"]);
+                    if (Convert.ToInt32(allGrpCalls.Tables[5].Rows[0]["CountryID"]) == 108)
+                    {
+                        isBonusAvailable = true;
+                    }
+                    else
+                    {
+                        isBonusAvailable = false;
+                    }
+                    allGrpCallsObj = new JObject(new JProperty("Success", true),
+                        new JProperty("Message", "Success"),
+                           new JProperty("TimeStamp", outTimeStamp),
+                                        new JProperty("Count", count),
+                                        new JProperty("DNDNumber", System.Configuration.ConfigurationManager.AppSettings["DNDNumber"].ToString()),
+                                        new JProperty("UserBal", userBal),
+                                        new JProperty("ProfileImagePath", "https://new.grptalk.com/" + profileImagePath),
+                                        new JProperty("UserCurrentDate", userCurrentDate),
+                                        new JProperty("UserRegisteredDate", userRegTimeStamp),
+                                        new JProperty("ServiceProviderNumber", System.Configuration.ConfigurationManager.AppSettings["ServiceProviderNumber"].ToString()),
+                                        new JProperty("BonusDuration", bonusDuration),
+                                        new JProperty("BonusExpiryTime", bonusexpiryTime),
+                                        new JProperty("MaxConcurrency", maxConcurrency),
+                                        new JProperty("MinimumBalance", System.Configuration.ConfigurationManager.AppSettings["MinimumBalance"].ToString()),
+                                        new JProperty("CurrentAppVersion", CurrentAppVersion),
+                                        new JProperty("Currency", allGrpCalls.Tables[5].Rows[0]["CurrencyName"].ToString()),
+                                        new JProperty("RequestedAmount", allGrpCalls.Tables[5].Rows[0]["PaidAmount"].ToString()),
+                                        new JProperty("RequestedMinutes", allGrpCalls.Tables[5].Rows[0]["AddedAmount"].ToString()),
+                                        new JProperty("IsBonusAvailable", Convert.ToBoolean(allGrpCalls.Tables[5].Rows[0]["IsBonusAvailable"])),
+                                        new JProperty("InAppPurchase", true),
+                                        new JProperty("SupportEmailID", "hello@grptalk.com"),
+                                        new JProperty("DeletedGroupCalls", deleteJarr),
+                                        new JProperty("Groups", allGrpCallsJarr));
+                }
+                else
+                {
+                    allGrpCallsObj = new JObject(new JProperty("Success", false),
+                        new JProperty("Message", retMessage));
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception in GetAllGroupCallsBussiness" + ex.ToString());
+                allGrpCallsObj = new JObject(new JProperty("Success", false),
+                     new JProperty("Message", "Something Went Wrong"));
+            }
+            return allGrpCallsObj;
+        }
+
+        /// <summary>
+        /// This Function is Used to Delete a GroupCall
+        /// </summary>
+        public JObject DeleteGroupCall(string sConnString, int groupCallID)
+        {
+            JObject responseObj = new JObject();
+            int retVal = 0;
+            string retMsg = "";
+            try
+            {
+                DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                retMsg = groupsObj.DeleteGroupCall(groupCallID, out retVal);
+                if (retVal == 1)
+                {
+                    responseObj = new JObject(new JProperty("Success", true),
+                        new JProperty("Message", retMsg),
+                        new JProperty("ConferenceID", groupCallID));
+                }
+                else
+                {
+                    responseObj = new JObject(new JProperty("Success", false),
+                        new JProperty("Message", retMsg));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                responseObj = new JObject(new JProperty("Success", false),
+                     new JProperty("Message", "Server Internal Error"));
+                Logger.ExceptionLog("DeleteGroupCall---" + ex.ToString());
+            }
+            return responseObj;
+
+        }
+
+        /// <summary>
+        /// This Function is Used to Update a GroupCall
+        /// </summary>
+        public JObject UpdateGroupCallName(string sConnString, int userId, int groupCallID, string groupCallName)
+        {
+            JObject responseObj = new JObject();
+            int RetVal = 0;
+            string RetMessage = "";
+            try
+            {
+                DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                RetMessage = groupsObj.UpdateGroupCallName(userId, groupCallID, groupCallName, out RetVal);
+                if (RetVal == 1)
+                {
+                    responseObj = new JObject(new JProperty("Status", true),
+                        new JProperty("Message", RetMessage));
+
+                }
+                else
+                {
+                    responseObj = new JObject(new JProperty("Status", false),
+                        new JProperty("Message", RetMessage));
+                }
+            }
+            catch (Exception ex)
+            {
+                responseObj = new JObject(new JProperty("Status", false),
+                    new JProperty("Message", "Server Internal Error"));
+                Logger.ExceptionLog("GroupMasterBussiness_---" + ex.ToString());
+            }
+            return responseObj;
+        }
+
+        /// <summary>
+        /// This Function is Used to Get GroupCall Details By GroupID
+        /// </summary>
+        public JObject GetGroupCallDetailsByGoupID(string sConnString, int userId, int groupCallID)
+        {
+
+
+            JArray jArr = new JArray();
+            JArray jArr1 = new JArray();
+            JArray participantsJarr = new JArray();
+            JArray jArr3 = new JArray();
+            JObject reportsObj = new JObject();
+            int isMuteDial = 0;
+            string startTime = "";
+            string duration = "";
+            string timeToGo = "";
+
+            JObject responseObj = new JObject();
+            DataSet reportsDs = new DataSet();
+            int retVal = 0;
+            string retMsg = "";
+            try
+            {
+                DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                reportsDs = groupsObj.GetGroupCallDetailsByGroupCallID(userId, groupCallID, out retVal, out retMsg);
+
+                if (retVal == 1)
+                {
+                    if (reportsDs.Tables[0].Rows.Count > 0)
+                    {
+                        var _with1 = reportsDs.Tables[0];
+                        for (int i = 0; i <= _with1.Rows.Count - 1; i++)
+                        {
+                            participantsJarr = new JArray();
+                            if ((_with1.Rows[i]["participants"] != DBNull.Value))
+                            {
+
+                                foreach (string item in _with1.Rows[i]["participants"].ToString().Split(','))
+                                {
+                                    participantsJarr.Add(item);
+                                }
+
+
+                            }
+                            if (Convert.ToBoolean(_with1.Rows[i]["ismutedial"]) == true)
+                            {
+                                isMuteDial = 1;
+                            }
+                            else if (Convert.ToBoolean(_with1.Rows[i]["ismutedial"]) == false)
+                            {
+                                isMuteDial = 0;
+                            }
+                            else
+                            {
+                                isMuteDial = 0;
+                            }
+                            if (Convert.ToBoolean(string.IsNullOrEmpty(_with1.Rows[i]["duration"].ToString())) == true)
+                            {
+                                duration = "0";
+                            }
+                            else
+                            {
+                                duration = _with1.Rows[i]["duration"].ToString();
+                            }
+                            if (_with1.Rows[i]["starttime"] == null)
+                            {
+                                timeToGo = "0";
+                                startTime = "0";
+                            }
+                            else
+                            {
+                                timeToGo = getTimeString(_with1.Rows[i]["starttime"].ToString());
+                                startTime = _with1.Rows[i]["confdonetime"].ToString().Substring(0, 11);
+
+                            }
+                            reportsObj = (new JObject(new JProperty("conferenceid", _with1.Rows[i]["conferenceid"].ToString()),
+                                                new JProperty("conferencename", _with1.Rows[i]["conferencename"].ToString()),
+                                                new JProperty("pin", _with1.Rows[i]["pin"].ToString()),
+                                                new JProperty("totalmembers", _with1.Rows[i]["totalmembers"].ToString()),
+                                                new JProperty("moderatorname", _with1.Rows[i]["moderator"].ToString()),
+                                                new JProperty("moderatormobile", _with1.Rows[i]["moderatormobile"].ToString()),
+                                                new JProperty("createdtime", _with1.Rows[i]["created"].ToString()),
+                                                new JProperty("batchid", _with1.Rows[i]["batchid"].ToString()),
+                                                new JProperty("lastconference", _with1.Rows[i]["confdonetime"].ToString()),
+                                                new JProperty("startdatetime", _with1.Rows[i]["startdatetime"].ToString()),
+                                                new JProperty("schduleddate", _with1.Rows[i]["startdate"].ToString()),
+                                                new JProperty("schduledtime", _with1.Rows[i]["start_time"].ToString()),
+                                                new JProperty("IsStarted", _with1.Rows[i]["InProgress"].ToString()),
+                                                new JProperty("timetogo", timeToGo), new JProperty("lastdate", startTime),
+                                                new JProperty("schtype", _with1.Rows[i]["schtype"].ToString()),
+                                                new JProperty("callerid", _with1.Rows[i]["callerid"].ToString()),
+                                                new JProperty("ismutedial", isMuteDial),
+                                                new JProperty("conferenceroom", _with1.Rows[i]["conf_room"].ToString()),
+                                                new JProperty("confstatus", "update"),
+                                                new JProperty("duration", duration),
+                                                new JProperty("participantnames", _with1.Rows[i]["names"].ToString()),
+                                                new JProperty("recursdays", _with1.Rows[i]["recursdays"].ToString()),
+                                                new JProperty("weekdays", _with1.Rows[i]["weekdays"].ToString()),
+                                                new JProperty("monthweek", _with1.Rows[i]["monthweek"].ToString()),
+                                                new JProperty("monthday", _with1.Rows[i]["monthday"].ToString()),
+                                                new JProperty("timezone", _with1.Rows[i]["timezone"].ToString()),
+                                                new JProperty("reminder", _with1.Rows[i]["reminder"].ToString()),
+                                                new JProperty("participants", participantsJarr)));
+
+                        }
+                    }
+
+
+                    responseObj = new JObject(new JProperty("Success", true),
+                        new JProperty("Message", "success"),
+                        new JProperty("Conference", reportsObj));
+                }
+                else
+                {
+                    responseObj = new JObject(new JProperty("Success", false),
+                        new JProperty("Message", "failed"),
+                        new JProperty("ErrorCode", "E0002"));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception in GetAllGroupCallDetailsByGroupIDBussiness---" + ex.ToString());
+                responseObj = new JObject(new JProperty("Success", false),
+                    new JProperty("Message", "ServerError"));
+            }
+            return responseObj;
+        }
+
+        /// <summary>
+        /// This Function is Used to Get GroupCall Room
+        /// </summary>
+        public JObject GetGroupCallRoom(string sConnString, int confID, int userID)
+        {
+
+            DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+            DataSet callRoomDs = new DataSet();
+            JObject responseJObj = new JObject();
+            JObject jObj1 = new JObject();
+            JObject jObj2 = new JObject();
+            JArray grpCallRoomJarr = new JArray();
+            JObject grpCallRoomJObj = new JObject();
+            Int16 retVal = 0, iterator = 0;
+            string retMsg = "", startTime = "", serverTime = "";
+            try
+            {
+
+
+
+                callRoomDs = groupsObj.GetConferenceRoom(confID, userID, out retVal, out retMsg, out serverTime, out startTime);
+
+
+                if (retVal == 1)
+                {
+                    if (callRoomDs.Tables.Count > 0 && callRoomDs.Tables[0].Rows.Count > 0)
+                    {
+                        //for (iterator = 0; iterator <= callRoomDs.Tables[0].Rows.Count - 1; iterator++)
+                        //{
+                        //    grpCallRoomJarr.Add(new JObject(new JProperty("member", callRoomDs.Tables[0].Rows[iterator]["name"].ToString()),
+                        //                         new JProperty("to_num", callRoomDs.Tables[0].Rows[iterator]["mobile"].ToString()),
+                        //                         new JProperty("direction", callRoomDs.Tables[0].Rows[iterator]["direction"].ToString()),
+                        //                         new JProperty("type", callRoomDs.Tables[0].Rows[iterator]["type"].ToString()),
+                        //                         new JProperty("mute", callRoomDs.Tables[0].Rows[iterator]["mute"].ToString()),
+                        //                         new JProperty("deaf", callRoomDs.Tables[0].Rows[iterator]["deaf"].ToString()),
+                        //                         new JProperty("handraise", callRoomDs.Tables[0].Rows[iterator]["handraise"].ToString()),
+                        //                         new JProperty("call_status", callRoomDs.Tables[0].Rows[iterator]["callstatus"].ToString())));
+                        //}
+
+                        foreach (DataRow dr in callRoomDs.Tables[0].Rows)
+                        {
+                            grpCallRoomJObj = new JObject();
+
+                            foreach (DataColumn dc in callRoomDs.Tables[0].Columns)
+                            {
+
+                                if (dc.ColumnName != "MemberJoinTime")
+                                {
+                                    grpCallRoomJObj.Add(new JProperty(dc.ColumnName, dr[dc.ColumnName]));
+                                }
+                                else
+                                {
+                                    grpCallRoomJObj.Add(new JProperty(dc.ColumnName, Convert.ToString(dr[dc.ColumnName])));
+                                }
+
+                            }
+
+                            grpCallRoomJarr.Add(grpCallRoomJObj);
+                        }
+                        jObj1 = new JObject(new JProperty("status", "true"), new JProperty("msg", retMsg));
+
+                        jObj2 = new JObject(new JProperty("data", grpCallRoomJarr), new JProperty("servertime", serverTime), new JProperty("starttime", startTime));
+
+                        responseJObj = new JObject(new JProperty("response", jObj1), new JProperty("result", jObj2));
+
+                    }
+                    else
+                    {
+                        responseJObj = new JObject(new JProperty("status", "false"), new JProperty("msg", "no data"));
+                    }
+
+                }
+                else
+                {
+                    responseJObj = new JObject(new JProperty("status", "false"), new JProperty("msg", retMsg));
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception in GroupMasterBusiness.GetGroupCallRoom is ==>" + ex.ToString());
+                responseJObj = new JObject(new JProperty("status", "false"),
+                    new JProperty("msg", "Something Went Wrong"));
+
+
+            }
+
+            return responseJObj;
+
+        }
+
+        /// <summary>
+        /// This Function is Used to Add Participant in GroupCall
+        /// </summary>
+
+        public JObject AddParticipantInGroupCall(string sConnString, JObject paramObj, int userID)
+        {
+            JObject responseJObj = new JObject();
+            JArray jArrayParticipants = new JArray();
+            DataTable membersForThisConference = default(DataTable);
+            Int32 confID = 0, retVal = 0;
+            string retMsg = "";
+            DataTable conferenceMebers = null;
+            DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+            BusinessHelper businessHelperObj = new BusinessHelper();
+            JArray jArryDnd = new JArray();
+            DataSet resultDataSet = new DataSet();
+            int HostIsDND;
+            bool DndFlag = false;
+            string MemberName = "";
+            string MemberMobile = "";
+            try
+            {
+                businessHelperObj.connString = sConnString;
+                membersForThisConference = new DataTable();
+                membersForThisConference.Columns.Add("Name", typeof(string));
+                membersForThisConference.Columns.Add("Mobile", typeof(string));
+                membersForThisConference.Columns.Add("IsDndCheck", typeof(int));
+
+                try
+                {
+                    if (paramObj.SelectToken("ConferenceID") == null)
+                    {
+                        responseJObj = new JObject(new JProperty("Success", false),
+                                         new JProperty("Message", "Invalid ConferenceID"));
+                        return responseJObj;
+                    }
+                    else
+                    {
+                        confID = Int32.Parse(paramObj.SelectToken("ConferenceID").ToString());
+                    }
+
+                    if (JArray.Parse(paramObj.SelectToken("Participants").ToString()).Count == 0)
+                    {
+                        responseJObj = new JObject(new JProperty("Success", false),
+                                             new JProperty("Message", "Please select participants"));
+                        return responseJObj;
+                    }
+                    else
+                    {
+                        foreach (JObject _Members in (JArray)paramObj.SelectToken("Participants"))
+                        {
+                            foreach (JProperty _Token in _Members.Properties())
+                            {
+                                if (_Token.Name == "IsDndFlag")
+                                {
+                                    DndFlag = Convert.ToBoolean(_Token.Value.ToString());
+                                }
+                                else
+                                {
+                                    MemberName = _Token.Name;
+                                    MemberMobile = _Token.Value.ToString();
+                                }
+                            }
+
+                            membersForThisConference.Rows.Add(MemberName, MemberMobile, DndFlag);
+
+                        }
+                        conferenceMebers = businessHelperObj.GetConferenceMebers(membersForThisConference, userID, "v1.0.1", out HostIsDND);
+                        if (conferenceMebers == null)
+                        {
+                            responseJObj = new JObject(new JProperty("Success", false),
+                                                 new JProperty("Message", "Unable to parse participants"));
+                            return responseJObj;
+                        }
+
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    Logger.ExceptionLog("Exception in GroupMasterBusiness.AddParticipantInGroupCall is ==>" + ex.ToString());
+                    responseJObj = new JObject(new JProperty("Success", false),
+                                       new JProperty("Message", "Server Error"));
+                    return responseJObj;
+
+                }
+
+
+                resultDataSet = groupsObj.SaveContactsToConference(conferenceMebers, userID, confID, out retVal, out retMsg);
+
+
+                if (retVal == 1)
+                {
+
+                    if (resultDataSet.Tables.Count > 0)
+                    {
+
+
+                        if (resultDataSet.Tables[1].Rows.Count > 0)
+                        {
+                            var _with1 = resultDataSet.Tables[1];
+
+                            for (int i = 0; i <= _with1.Rows.Count - 1; i++)
+                            {
+                                jArryDnd.Add(new JObject(new JProperty("Name", _with1.Rows[i]["member_name"]),
+                                    new JProperty("Mobile", _with1.Rows[i]["mobile_number"]),
+                                    new JProperty("IsDnd", _with1.Rows[i]["is_dnd"]),
+                                    new JProperty("IsOptedIn", _with1.Rows[i]["IsOptedIn"]),
+                                    new JProperty("IsOptinSent", _with1.Rows[i]["OptedInstructionsSent"])));
+
+                            }
+                        }
+
+
+                        if (resultDataSet.Tables[2].Rows.Count > 0)
+                        {
+                            var _with2 = resultDataSet.Tables[2];
+                            for (int i = 0; i <= resultDataSet.Tables[2].Rows.Count - 1; i++)
+                            {
+                                jArrayParticipants.Add(new JObject(new JProperty("Name", _with2.Rows[i]["member_name"]),
+                                    new JProperty("Mobile", _with2.Rows[i]["mobile_number"]),
+                                    new JProperty("IsDnd", _with2.Rows[i]["is_dnd"]),
+                                    new JProperty("IsOptedIn", _with2.Rows[i]["IsOptedIn"]),
+                                    new JProperty("IsOptinSent", _with2.Rows[i]["OptedInstructionsSent"])));
+
+                            }
+                        }
+                    }
+
+
+
+                    responseJObj = new JObject(new JProperty("Success", true),
+                                       new JProperty("Message", retMsg),
+                                        new JProperty("AddedParticipants", jArrayParticipants),
+                                        new JProperty("DndContacts", jArryDnd));
+                }
+                else
+                {
+                    responseJObj = new JObject(new JProperty("Success", false),
+                                           new JProperty("Message", retMsg));
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception in GroupMasterBusiness.AddParticipantInGroupCall is ==>" + ex.ToString());
+                responseJObj = new JObject(new JProperty("Success", false),
+                    new JProperty("Message", "Something Went Wrong"));
+
+            }
+
+            return responseJObj;
+        }
+
+        /// <summary>
+        /// This Function is Used to Get Time in a string 
+        /// </summary>
+
+        public string getTimeString(string strdate)
+        {
+            TimeSpan ts = default(TimeSpan);
+            DateTime dt = DateTime.Now;
+            DateTime sdt = Convert.ToDateTime(strdate);
+            ts = Convert.ToDateTime(dt.AddMinutes(330)) - Convert.ToDateTime(sdt.AddMinutes(330));
+            int id = 0;
+            int ih = 0;
+            int im = 0;
+            int j = 0;
+            id = ts.Days;
+            ih = ts.Hours;
+            im = ts.Minutes;
+            string retVal = "";
+            if (id > 0 && id < 30)
+            {
+                if ((id == 1))
+                {
+                    retVal = "a day";
+                }
+                else
+                {
+                    retVal = id + " days";
+                }
+
+            }
+            else if (id > 0 && id >= 30)
+            {
+                double x = id / 30;
+                if ((Math.Round(x) == 1))
+                {
+                    retVal = "a month";
+                }
+                else
+                {
+                    retVal = Math.Round(x) + " months";
+                }
+            }
+            else if (ih > 0)
+            {
+                if ((ih == 1))
+                {
+                    retVal = "a hour";
+                }
+                else
+                {
+                    retVal = ih + " hours";
+                }
+
+            }
+            else if (im > 0)
+            {
+                if ((im == 1))
+                {
+                    retVal = "a minute";
+                }
+                else
+                {
+                    retVal = im + " minutes";
+                }
+            }
+            else if (im == 0)
+            {
+                retVal = "a few second(s)";
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// This Function is Used to Get Group Members WIth Country Prefix
+        /// </summary>
+
+
+        public JObject IOSBuyCredits(string sConnString, JObject paramObj, int countryID)
+        {
+            BusinessHelper helperObj = new BusinessHelper();
+            helperObj.connString = sConnString;
+            JObject responseObj = new JObject();
+
+            int retVal;
+            String retMsg = "";
+            double availbaleAmount = 0;
+            string _AccessToken = "";
+            string _TransactionID = "";
+            string _RequestLogPath = "";
+            string _PaymentStatus = "";
+            double _InAppPurchaseAmnt = 0;
+            string _TxnID = "";
+            byte[] _receiptdata = null;
+            string _InAppPurchaseRKey = "";
+            JObject _ReceiptObj = new JObject();
+            JObject _RespPlainData = new JObject();
+            string _BundleID = "";
+            string _ProductID = "";
+            string _ReqAppVersion = "";
+            string _ReqBuildNumber = "";
+            string _ReqBundleID = "";
+            JObject _InAppjobj = new JObject();
+            DataSet purchaseDs = new DataSet();
+            JObject purchaseObj = new JObject();
+
+
+            _BundleID = System.Configuration.ConfigurationManager.AppSettings["BundleID"].ToString();
+
+            _InAppPurchaseRKey = System.Configuration.ConfigurationManager.AppSettings["InAppPurchaseRKey"];
+            _InAppPurchaseAmnt = Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["InPurchaseRechargeAmount"]);
+            _RequestLogPath = System.Configuration.ConfigurationManager.AppSettings["InAppPurchaseLogsPath"].ToString();
+            if (countryID == 108)
+            {
+                _ProductID = System.Configuration.ConfigurationManager.AppSettings["ProductID"].ToString();
+            }
+            if (countryID == 239)
+            {
+                _ProductID = System.Configuration.ConfigurationManager.AppSettings["ProductIDForUAE"].ToString();
+            }
+            if (countryID == 241)
+            {
+                _ProductID = System.Configuration.ConfigurationManager.AppSettings["ProductIDForUS"].ToString();
+            }
+            if (countryID == 19)
+            {
+                _ProductID = System.Configuration.ConfigurationManager.AppSettings["ProductIDForBAHRAIN"].ToString();
+            }
+            if (paramObj.SelectToken("TransactionIdentifier") == null)
+            {
+                helperObj.NewProperty("Success", false);
+                helperObj.NewProperty("Message", "TransactionIdentifier Is Empty");
+                helperObj.NewProperty("ErrorCode", "E0001");
+                return helperObj.GetResponse();
+
+            }
+            if (paramObj.SelectToken("ReceiptData") == null)
+            {
+                helperObj.NewProperty("Success", false);
+                helperObj.NewProperty("Message", "ReceiptData Is Empty");
+                helperObj.NewProperty("ErrorCode", "E0001");
+                return helperObj.GetResponse();
+
+            }
+            if (paramObj.SelectToken("PaymentStatus") == null)
+            {
+                helperObj.NewProperty("Success", false);
+                helperObj.NewProperty("Message", "PaymentStatus Is Empty");
+                helperObj.NewProperty("ErrorCode", "E0001");
+                return helperObj.GetResponse();
+            }
+
+            try
+            {
+                _AccessToken = HttpContext.Current.Request.Headers["AccessToken"].ToString();
+                _TransactionID = paramObj.SelectToken("TransactionIdentifier").ToString();
+                _TxnID = HttpContext.Current.Request.Headers["TxnID"].ToString();
+                _PaymentStatus = paramObj.SelectToken("PaymentStatus").ToString();
+                _receiptdata = Convert.FromBase64String(paramObj.SelectToken("ReceiptData").ToString());
+            }
+            catch (Exception ex)
+            {
+                helperObj.NewProperty("Success", false);
+                //helperObj.NewProperty("Message", "Something Went Wrong While Parsing Input Stream");
+                helperObj.NewProperty("Message", ex.ToString());
+                helperObj.NewProperty("ErrorCode", "E0002");
+                return helperObj.GetResponse();
+            }
+            //-------------------------Parsing Receipt Data-------------
+            try
+            {
+                _RespPlainData = JObject.Parse(PurchaseCredits(_receiptdata));
+                if (_RespPlainData.SelectToken("status") == null || _RespPlainData.SelectToken("status").ToString() != "0")
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "Invlaid receipt data");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+                if (_RespPlainData.SelectToken("receipt").SelectToken("bundle_id") == null)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "BundleID is empty");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+                if (_RespPlainData.SelectToken("receipt").SelectToken("application_version") == null)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "application_version is empty");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+                if (_RespPlainData.SelectToken("receipt").SelectToken("original_application_version") == null)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "original application version is empty");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+                string res = _RespPlainData.SelectToken("receipt").SelectToken("in_app").ToString().Replace("[", "").Replace("]", "").ToString();
+                _InAppjobj = JObject.Parse(res.Substring(0, res.IndexOf("}") + 1));
+
+                //if (_InAppjobj.SelectToken("transaction_id") == null || _InAppjobj.SelectToken("transaction_id").ToString() != _TransactionID)
+                //{
+                //    helperObj.NewProperty("Success", false);
+                //    helperObj.NewProperty("Message", "TransactionID mismatched");
+                //    helperObj.NewProperty("ErrorCode", "E0001");
+                //    return helperObj.GetResponse();
+                //}
+                //_ReqBuildNumber = _RespPlainData.SelectToken("receipt").SelectToken("application_version").ToString();
+                //_ReqAppVersion = _RespPlainData.SelectToken("receipt").SelectToken("original_application_version").ToString();
+                //_ReqBundleID = _RespPlainData.SelectToken("receipt").SelectToken("bundle_id").ToString();
+                //if (_ReqBundleID != _BundleID)
+                //{
+                //    helperObj.NewProperty("Success", false);
+                //    helperObj.NewProperty("Message", "BundleID mismatched");
+                //    helperObj.NewProperty("ErrorCode", "E0001");
+                //    return helperObj.GetResponse();
+                //}
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception at InAppPurchase : " + ex.ToString());
+                helperObj.NewProperty("Success", false);
+                //helperObj.NewProperty("Message", "Something Went Wrong While Parsing receipt data");
+                helperObj.NewProperty("Message", ex.ToString());
+                helperObj.NewProperty("ErrorCode", "E0002");
+                return helperObj.GetResponse();
+            }
+
+            //try
+            //{
+            //    string AppVersion = "1.2";
+            //    string BuildNumber = "1";
+            //    GetAppVersions(sConnString, _AccessToken, ref  AppVersion, ref  BuildNumber);
+
+            //    if (BuildNumber != _ReqBuildNumber)
+            //    {
+            //        helperObj.NewProperty("Success", false);
+            //        helperObj.NewProperty("Message", "Build Number mismatched");
+            //        helperObj.NewProperty("ErrorCode", "E0002");
+            //        return helperObj.GetResponse();
+            //    }
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.ExceptionLog("Exception at InAppPurchase : " + ex.ToString());
+            //    helperObj.NewProperty("Success", false);
+            //    helperObj.NewProperty("Message", "Something Went Wrong While Validation App version");
+            //    helperObj.NewProperty("ErrorCode", "E0002");
+            //    return helperObj.GetResponse();
+            //}
+
+
+            DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+            purchaseDs = groupsObj.InAppBuyCredits(1, _AccessToken, _TransactionID, _TxnID, _PaymentStatus, out retVal, out availbaleAmount, out retMsg);
+
+            if (retVal == 1)
+            {
+                foreach (DataRow _row in purchaseDs.Tables[0].Rows)
+                {
+                    purchaseObj = new JObject();
+                    foreach (DataColumn _column in purchaseDs.Tables[0].Columns)
+                    {
+                        purchaseObj.Add(new JProperty(_column.ColumnName, _row[_column.ColumnName]));
+                    }
+                }
+                helperObj.NewProperty("Success", true);
+                helperObj.NewProperty("Message", retMsg);
+                helperObj.NewProperty("AvailableBalance", availbaleAmount);
+                helperObj.NewProperty("PurchaseData", purchaseObj);
+                return helperObj.GetResponse();
+
+            }
+
+            else
+            {
+                helperObj.NewProperty("Success", false);
+                helperObj.NewProperty("Message", retMsg);
+                return helperObj.GetResponse();
+            }
+
+
+        }
+
+        public JObject AndroidBuyCredits(string sConnString, JObject paramObj, int countryID)
+        {
+            BusinessHelper helperObj = new BusinessHelper();
+            helperObj.connString = sConnString;
+            JObject responseObj = new JObject();
+            string retMsg = "";
+            int retVal;
+            double availbaleAmount = 0;
+            JObject purchaseObj = new JObject();
+
+
+            string _AccessToken = "";
+            string _RequestLogPath = "";
+            string _PaymentStatus = "";
+
+            string _TxnID = "";
+
+
+            string _PackageName = "";
+            string _AndroidProductID = "";
+            string reqPackagename = "";
+            string productID = "";
+            string OrderID = "";
+            string reqOrderID = "";
+            DataSet purchaseDs = new DataSet();
+
+            _PackageName = ConfigurationManager.AppSettings["PackageName"].ToString();
+            if (countryID == 108)
+            {
+                _AndroidProductID = ConfigurationManager.AppSettings["AndroidProductID"].ToString();
+            }
+            if (countryID == 239)
+            {
+                _AndroidProductID = ConfigurationManager.AppSettings["AndroidProductIDForUAE"].ToString();
+            }
+            if (countryID == 241)
+            {
+                _AndroidProductID = ConfigurationManager.AppSettings["AndroidProductIDForUS"].ToString();
+            }
+            if (countryID == 19)
+            {
+                _AndroidProductID = ConfigurationManager.AppSettings["AndroidProductIDForBAHRAIN"].ToString();
+            }
+
+
+            _RequestLogPath = ConfigurationManager.AppSettings["InAppPurchaseLogsPath"].ToString();
+            _AccessToken = HttpContext.Current.Request.Headers["AccessToken"];
+            _TxnID = HttpContext.Current.Request.Headers["TxnID"];
+            _PaymentStatus = HttpContext.Current.Request["PaymentStatus"];
+            OrderID = HttpContext.Current.Request["OrderID"];
+
+
+            try
+            {
+                if (paramObj.SelectToken("packageName") == null)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "TransactionIdentifier Is Empty");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+                else
+                {
+                    reqPackagename = paramObj.SelectToken("packageName").ToString();
+                }
+                if (_PackageName != reqPackagename)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "PackageName MisMatched");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+
+                if (paramObj.SelectToken("productId") == null)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "productId Is Empty");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+                else
+                {
+                    productID = paramObj.SelectToken("productId").ToString();
+                }
+                if (_AndroidProductID != productID)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "ProductId MisMatched");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+
+                if (paramObj.SelectToken("orderId") == null)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "orderId Is Empty");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+                else
+                {
+                    reqOrderID = paramObj.SelectToken("orderId").ToString();
+                }
+                if (OrderID != reqOrderID)
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "OrderID MisMatched");
+                    helperObj.NewProperty("ErrorCode", "E0001");
+                    return helperObj.GetResponse();
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Logger.TraceLog("Exception at InAppPurchase : " + ex.ToString());
+                helperObj.NewProperty("Success", false);
+                helperObj.NewProperty("Message", "Something Went Wrong While Parsing receipt data");
+                helperObj.NewProperty("ErrorCode", "E0002");
+                return helperObj.GetResponse();
+            }
+
+            JObject response = new JObject();
+            string purchaseToken = "";
+            purchaseToken = paramObj.SelectToken("purchaseToken").ToString();
+            response = AndroidPurchaseCredits(purchaseToken, _AndroidProductID);
+            var errorProperty = response.Property("error");
+            if (response.SelectToken("Success").ToString() == "True")
+            {
+                if (errorProperty == null)
+                {
+                    if (response.SelectToken("purchaseTimeMillis").ToString() == paramObj.SelectToken("purchaseTime").ToString())
+                    {
+                        try
+                        {
+                            DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                            purchaseDs = groupsObj.InAppBuyCredits(2, _AccessToken, OrderID, _TxnID, _PaymentStatus, out retVal, out availbaleAmount, out retMsg);
+                            if (retVal == 1)
+                            {
+                                foreach (DataRow _row in purchaseDs.Tables[0].Rows)
+                                {
+                                    purchaseObj = new JObject();
+                                    foreach (DataColumn _column in purchaseDs.Tables[0].Columns)
+                                    {
+                                        purchaseObj.Add(new JProperty(_column.ColumnName, _row[_column.ColumnName]));
+                                    }
+                                }
+                                helperObj.NewProperty("Success", true);
+                                helperObj.NewProperty("Message", retMsg);
+                                helperObj.NewProperty("AvailableBalance", availbaleAmount);
+                                helperObj.NewProperty("PurchaseData", purchaseObj);
+                                return helperObj.GetResponse();
+                            }
+
+                            else
+                            {
+                                helperObj.NewProperty("Success", false);
+                                helperObj.NewProperty("Message", retMsg);
+                                return helperObj.GetResponse();
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.ExceptionLog(ex.ToString());
+                            helperObj.NewProperty("Success", false);
+                            helperObj.NewProperty("Message", ex.ToString());
+                            return helperObj.GetResponse();
+
+                        }
+
+                    }
+                    else
+                    {
+                        helperObj.NewProperty("Success", false);
+                        helperObj.NewProperty("Message", "Invalid Transaction");
+                        helperObj.NewProperty("ErrorCode", "E0003");
+                        return helperObj.GetResponse();
+                    }
+
+
+                }
+                else
+                {
+                    helperObj.NewProperty("Success", false);
+                    helperObj.NewProperty("Message", "Invalid Transaction");
+                    helperObj.NewProperty("ErrorCode", "E0003");
+                    return helperObj.GetResponse();
+                }
+            }
+            else
+            {
+                helperObj.NewProperty("Success", false);
+                helperObj.NewProperty("Message", "Invalid Transaction");
+                helperObj.NewProperty("ErrorCode", "E0003");
+                return helperObj.GetResponse();
+            }
+
+
+
+
+            return helperObj.GetResponse();
+
+        }
+        private JObject AndroidPurchaseCredits(string purchaseToken, string productId)
+        {
+            JObject responseJobj = new JObject();
+            string httpUrl = "https://accounts.google.com/o/oauth2/token";
+            StreamReader Sreader = null;
+            string _postdata = "";
+            string ResponseString = "";
+            JObject ResObj = new JObject();
+            HttpWebRequest _Req = null;
+            HttpWebResponse _Resp = null;
+            StreamWriter Swriter = null;
+            try
+            {
+                _Req = (HttpWebRequest)HttpWebRequest.Create(httpUrl.ToString());
+                _Req.Method = "POST";
+                _postdata = "grant_type=refresh_token&refresh_token=1/FWQ2BwRlsvt50NWQaRMNoiBFLnMh_j7QdRQUy5AHcMF90RDknAdJa_sgfheVM0XT&client_id=269370161838-imcjdstpn2vu610gjmu1pnbs1vhuk55a.apps.googleusercontent.com&client_secret=Zt6haRMbDxp_cJNGz_VC97w1";
+                _Req.ContentType = "application/x-www-form-urlencoded";
+                Swriter = new StreamWriter(_Req.GetRequestStream());
+                Swriter.Write(_postdata.Trim());
+                Swriter.Flush();
+                Swriter.Close();
+                _Resp = (HttpWebResponse)_Req.GetResponse();
+                Sreader = new StreamReader(_Resp.GetResponseStream());
+                ResponseString = Sreader.ReadToEnd();
+
+
+                ResObj = JObject.Parse(ResponseString);
+                if (string.IsNullOrEmpty(ResObj.ToString()) == false)
+                {
+                    if (string.IsNullOrEmpty(ResObj.SelectToken("access_token").ToString()) == false)
+                    {
+                        responseJobj = ValidateAndroidInAppPurchaseData(ResObj.SelectToken("access_token").ToString(), purchaseToken, productId);
+                    }
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception at PurchaseCredits : " + ex.ToString());
+                responseJobj = new JObject(new JProperty("Success", false),
+                    new JProperty("Message", "Transaction Failed"));
+
+            }
+            return responseJobj;
+
+        }
+        private JObject ValidateAndroidInAppPurchaseData(string accessToken, string purchaseToken, string productId)
+        {
+            string httpUrl = "https://www.googleapis.com/androidpublisher/v2/applications/com.mobile.android.grptalk/purchases/products/";
+            httpUrl = httpUrl + productId + "/tokens/" + purchaseToken + "?accesstoken=" + accessToken;
+            StreamReader Sreader = null;
+            string ResponseString = "";
+            JObject ResObj = new JObject();
+            HttpWebRequest _Req = null;
+            HttpWebResponse _Resp = null;
+            try
+            {
+                _Req = (HttpWebRequest)HttpWebRequest.Create(httpUrl.ToString());
+                _Req.Headers.Add("Authorization", "OAuth " + accessToken);
+                _Resp = (HttpWebResponse)_Req.GetResponse();
+                Sreader = new StreamReader(_Resp.GetResponseStream());
+                ResponseString = Sreader.ReadToEnd();
+                ResObj = JObject.Parse(ResponseString);
+                ResObj.Add(new JProperty("Success", true));
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exception in ValidateInAppPurchaseData :" + ex.ToString());
+                ResObj = new JObject(new JProperty("Success", false),
+                    new JProperty("Message", "Failed"));
+            }
+            return ResObj;
+        }
+
+
+        private string PurchaseCredits(byte[] receiptData)
+        {
+            string retMessage = "";
+            byte[] postBytes = null;
+            JObject receiptObj = new JObject();
+            HttpWebRequest webReq = null;
+            string httpUrl = "";
+            dynamic json = new JObject(new JProperty("receipt-data", receiptData)).ToString();
+            try
+            {
+                postBytes = Encoding.UTF8.GetBytes(json);
+
+                httpUrl = System.Configuration.ConfigurationManager.AppSettings["PurchaseCreditsSanboxURLStore"].ToString();
+                webReq = (HttpWebRequest)HttpWebRequest.Create(httpUrl);
+                webReq.Method = "POST";
+                webReq.ContentType = "application/json";
+                webReq.ContentLength = postBytes.Length;
+                using (Stream stream = webReq.GetRequestStream())
+                {
+                    stream.Write(postBytes, 0, postBytes.Length);
+                    stream.Flush();
+                }
+                dynamic sendresponse = webReq.GetResponse();
+                string sendresponsetext = "";
+                using (StreamReader streamreader = new StreamReader(sendresponse.GetResponseStream()))
+                {
+                    sendresponsetext = streamreader.ReadToEnd().Trim();
+                }
+                retMessage = sendresponsetext;
+                return retMessage;
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("Exp at PurchaseCredits : " + ex.ToString());
+                return "{'status':'2000'}";
+            }
+
+        }
+
+        public void GetAppVersions(string sConnString, string accessToken, ref string _version, ref string _bid)
+        {
+
+            DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+            groupsObj.GetAppversions(accessToken, out _version, out _bid);
+
+        }
+
+        public JObject GrpCallCancel(string sConnString, int ConferenceID)
+        {
+            JObject responseObj = new JObject();
+            int retVal = 0;
+            string lastCallDate = "";
+            string retMsg = "";
+            try
+            {
+                DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                retMsg = groupsObj.GrpCallCancel(ConferenceID, out retVal, out lastCallDate);
+                if (retVal == 1)
+                {
+                    responseObj = new JObject(new JProperty("Success", true),
+                        new JProperty("LatCallDate", lastCallDate),
+                        new JProperty("Message", retMsg));
+
+                }
+                else
+                {
+                    responseObj = new JObject(new JProperty("Success", false),
+                        new JProperty("Message", retMsg));
+                }
+            }
+            catch (Exception ex)
+            {
+                responseObj = new JObject(new JProperty("Success", false),
+                    new JProperty("Message", "Something Went Wrong"));
+                Logger.ExceptionLog("GroupMasterBussiness_---" + ex.ToString());
+            }
+            return responseObj;
+        }
+        public JObject CheckUserConfirmation(string sConnString, JObject paramObj)
+        {
+            JObject responseObj = new JObject();
+            BusinessHelper businessHelperObj = new BusinessHelper();
+            string mobile = "";
+            int RetVal = 0;
+            bool isConfirmed;
+            DataSet RegDs = new DataSet();
+            string RetMessage = "";
+            if (paramObj.SelectToken("MobileNumber") == null)
+            {
+                responseObj = new JObject(new JProperty("Success", false),
+              new JProperty("Message", "Unable to read MobileNumber"),
+              new JProperty("ErrorCode", "E0001"));
+                return responseObj;
+            }
+            mobile = paramObj.SelectToken("MobileNumber").ToString();
+            businessHelperObj.GetOnlyNumeric(ref mobile);
+            businessHelperObj.RemoveZeroPrefix(ref mobile);
+
+            try
+            {
+                DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                RegDs = groupsObj.CheckUserConfirmation(mobile, out RetVal, out RetMessage, out isConfirmed);
+
+                if (RetVal != 1)
+                {
+                    responseObj = new JObject(new JProperty("Success", false),
+                    new JProperty("Message", RetMessage),
+                    new JProperty("MobileNumber", mobile));
+                    if (RegDs.Tables.Count > 0 && RegDs.Tables[0].Rows.Count > 0)
+                    {
+                        var _with1 = RegDs.Tables[0].Rows[0];
+                        foreach (DataColumn _Column in _with1.Table.Columns)
+                        {
+                            responseObj.Add(new JProperty(_Column.ColumnName, RegDs.Tables[0].Rows[0][_Column.ColumnName]));
+                        }
+                    }
+                    return (responseObj);
+
+                }
+                else
+                {
+                    if (isConfirmed == true)
+                    {
+                        responseObj = new JObject(new JProperty("Success", true),
+                        new JProperty("Message", "User Already Confirmed"),
+                        new JProperty("MobileNumber", mobile));
+                        if (RegDs.Tables.Count > 0 && RegDs.Tables[0].Rows.Count > 0)
+                        {
+                            var _with2 = RegDs.Tables[0].Rows[0];
+                            foreach (DataColumn _Column in _with2.Table.Columns)
+                            {
+                                responseObj.Add(new JProperty(_Column.ColumnName, RegDs.Tables[0].Rows[0][_Column.ColumnName]));
+                            }
+                        }
+                        return (responseObj);
+                    }
+                    else
+                    {
+                        responseObj = new JObject(new JProperty("Success", false),
+                       new JProperty("MobileNumber", mobile));
+                        return (responseObj);
+
+                    }
+
+                    return (responseObj);
+
+                }
+            }
+
+
+            catch (Exception ex)
+            {
+                responseObj = new JObject(new JProperty("Success", false),
+                    new JProperty("Message", "Something Went Wrong"));
+                Logger.ExceptionLog("GroupMasterBussiness_---" + ex.ToString());
+            }
+
+
+            return responseObj;
+        }
+        public JObject InAppPurchaseHistory(string sConnString, int userID)
+        {
+            JObject responseJObj = new JObject();
+            DataSet Ds = new DataSet();
+            JObject tempJobj = new JObject();
+            JArray Jarr = new JArray();
+            try
+            {
+                DataAccessLayer.V_1_2.Groups_V120 groupsObj = new DataAccessLayer.V_1_2.Groups_V120(sConnString);
+                Ds = groupsObj.InAppPurchaseHistory(userID);
+                if (Ds.Tables[0].Rows.Count > 0)
+                {
+
+                    foreach (DataRow _row in Ds.Tables[0].Rows)
+                    {
+                        tempJobj = new JObject();
+                        foreach (DataColumn _column in Ds.Tables[0].Columns)
+                        {
+                            tempJobj.Add(new JProperty(_column.ColumnName, _row[_column.ColumnName]));
+                        }
+                        Jarr.Add(tempJobj);
+                    }
+                    responseJObj = new JObject(new JProperty("Success", true),
+                        new JProperty("Message", "Success"),
+                        new JProperty("Items", Jarr));
+                }
+                else
+                {
+                    responseJObj = new JObject(new JProperty("Success", false),
+                        new JProperty("Message", "No Recharge History Found"));
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.ExceptionLog("exception Bll " + ex.ToString());
+                responseJObj = new JObject(new JProperty("Success", false),
+                        new JProperty("Message", "Something Went Wrong"));
+            }
+            return responseJObj;
+
+        }
+
+    }
+}

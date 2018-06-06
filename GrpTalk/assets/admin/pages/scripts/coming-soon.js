@@ -1,0 +1,1 @@
+var ComingSoon=function(){return{init:function(){var n=new Date;n=new Date(n.getFullYear()+1,0,26);$("#defaultCountdown").countdown({until:n});$("#year").text(n.getFullYear())}}}()
